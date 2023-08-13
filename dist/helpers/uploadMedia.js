@@ -35,21 +35,34 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.uploadMedia = void 0;
 const axios_1 = __importStar(require("axios"));
 const uploadMedia = (image_url, caption) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const access_token = process.env.ACCESS_TOKEN;
     const ig_user_id = process.env.IG_USER_ID;
-    const post_url = `https://graph.facebook.com/v17.0/${ig_user_id}/media`;
+    const post_url = `https://graph.facebook.com/v17.0/${ig_user_id}/media?media_type=REELS`;
+    console.log(image_url);
     const payload = {
-        image_url: image_url,
+        video_url: image_url,
         caption,
         access_token: access_token,
     };
+    // try {
+    //   const r = await axios.post(post_url, payload);
+    //   return r.data.id;
+    // }
+    const coverUrl = '';
+    const thumbOffset = '';
+    const locationId = '';
+    const uploadParamsString = `caption=${caption}&cover_url=${coverUrl}&thumb_offset=${thumbOffset}&location_id=${locationId}&access_token=${access_token}`;
+    const uploadVideoUri = `https://graph.facebook.com/v17.0/${ig_user_id}/media?media_type=REELS&video_url=${image_url}&${uploadParamsString}`;
     try {
-        const r = yield axios_1.default.post(post_url, payload);
-        return r.data.id;
+        const uploadResponse = yield axios_1.default.post(uploadVideoUri);
+        console.log(uploadResponse.data);
+        return uploadResponse.data.id;
     }
     catch (error) {
+        // console.log(error);
         if (error instanceof axios_1.AxiosError) {
-            console.log(error.message);
+            console.log((_a = error.response) === null || _a === void 0 ? void 0 : _a.data);
         }
         if (error instanceof Error) {
             console.log(error.message);

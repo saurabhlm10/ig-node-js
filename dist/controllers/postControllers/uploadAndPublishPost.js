@@ -20,66 +20,41 @@ const fs_1 = __importDefault(require("fs"));
 const uploadMedia_1 = require("../../helpers/uploadMedia");
 const publishMedia_1 = require("../../helpers/publishMedia");
 const axios_1 = require("axios");
+const CSVFields_1 = require("../../constants/CSVFields");
 const uploadAndPublishPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
-        // console.log("reached uploadAndPublishPost");
         const csvFilePath = path_1.default.join(process.cwd(), "/src/files", "Example.csv");
-        // console.log("1", csvFilePath);
         const posts = yield (0, csvtojson_1.default)().fromFile(csvFilePath);
-        // console.log("2", posts);
         // Find Post with uploaded = none
         const currentPostId = posts.findIndex((post) => {
             return post.uploaded === "";
         });
-        // console.log("3", currentPostId);
         if (currentPostId === -1) {
             return new Response("No Posts To Be Uploaded", { status: 404 });
         }
-        const mediaToUpload = posts[currentPostId].image_url;
-        // console.log("4", mediaToUpload);
+        const mediaToUpload = posts[currentPostId].media_url;
+        // Upload Media, save creation_id and uploaded status to CSV
         const creation_id = (yield (0, uploadMedia_1.uploadMedia)(mediaToUpload, posts[currentPostId].caption));
-        // const creation_id = (await uploadMedia(
-        //   mediaToUpload,
-        //   posts[currentPostId].caption
-        // )) as string;
-        // console.log("5", mediaToUpload);
         posts[currentPostId].creation_id = creation_id;
         posts[currentPostId].uploaded = "Y";
-        // console.log("6", posts);
         const postsInCsv = new json2csv_1.Parser({
-            fields: [
-                "image_url",
-                "caption",
-                "uploaded",
-                "creation_id",
-                "published",
-                "published_id",
-            ],
+            fields: CSVFields_1.csvFields,
         }).parse(posts);
         fs_1.default.writeFileSync(csvFilePath, postsInCsv);
-        // console.log("7", postsInCsv);
+        // Publish Media, save published_id, update published status to Y in CSV
         const published_id = (yield (0, publishMedia_1.publishMedia)(creation_id));
         posts[currentPostId].published = "Y";
         posts[currentPostId].published_id = published_id;
         const postsInCsv2 = new json2csv_1.Parser({
-            fields: [
-                "image_url",
-                "caption",
-                "uploaded",
-                "creation_id",
-                "published",
-                "published_id",
-            ],
+            fields: CSVFields_1.csvFields,
         }).parse(posts);
         fs_1.default.writeFileSync(csvFilePath, postsInCsv2);
-        // console.log(postsInCsv2);
         return res.status(200).json({
             message: "Post Published Successfully",
         });
     }
     catch (error) {
-        // console.log(error);
         if (error instanceof axios_1.AxiosError) {
             return res.status(400).json((_a = error.response) === null || _a === void 0 ? void 0 : _a.data);
         }

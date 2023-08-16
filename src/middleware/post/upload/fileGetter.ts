@@ -43,15 +43,9 @@ export const fileGetter = async (
     return next();
   }
 
-  // Make API call to get video_url
-  const source_reel_url: string = posts[currentPostId].source_reel_url;
-  const jsonModifier: string = "?__a=1&__d=dis";
-  const videoJsonUrl: string = source_reel_url + jsonModifier;
+  const video_url: string = posts[currentPostId].video_url;
+
   try {
-    const videoJson = await axios.get(videoJsonUrl);
-
-    const video_url: string = videoJson.data.graphql.shortcode_media.video_url;
-
     // Upload video to cloudinary
     const cloudinaryUploadResponse = await cloudinary.uploader.upload(
       video_url,
@@ -75,7 +69,7 @@ export const fileGetter = async (
     }
     if (error instanceof Error) {
       console.log(error);
-       return res.status(403).json({
+      return res.status(403).json({
         message: error.message,
       });
     }

@@ -12,18 +12,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.publishPost = void 0;
-const csvtojson_1 = __importDefault(require("csvtojson"));
-const json2csv_1 = require("json2csv");
+exports.uploadMediaContainer = void 0;
 const path_1 = __importDefault(require("path"));
-const fs_1 = __importDefault(require("fs"));
+const csvtojson_1 = __importDefault(require("csvtojson"));
 const uploadMedia_1 = require("../../helpers/uploadMedia");
-const publishMedia_1 = require("../../helpers/publishMedia");
-const axios_1 = require("axios");
+const json2csv_1 = require("json2csv");
 const CSVFields_1 = require("../../constants/CSVFields");
-const publishPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const fs_1 = __importDefault(require("fs"));
+const axios_1 = require("axios");
+const uploadMediaContainer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
+        console.log("uploadMediaContainer");
         const csvFilePath = path_1.default.join(process.cwd(), "/src/files", "Example.csv");
         const posts = yield (0, csvtojson_1.default)().fromFile(csvFilePath);
         // Find Post with uploaded = none
@@ -31,7 +31,9 @@ const publishPost = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             return post.uploaded === "";
         });
         if (currentPostId === -1) {
-            return new Response("No Posts To Be Uploaded", { status: 404 });
+            return res.status(400).json({
+                message: "No Posts To Be Uploaded",
+            });
         }
         const mediaToUpload = posts[currentPostId].media_url;
         // Upload Media, save creation_id and uploaded status to CSV
@@ -42,16 +44,9 @@ const publishPost = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             fields: CSVFields_1.csvFields,
         }).parse(posts);
         fs_1.default.writeFileSync(csvFilePath, postsInCsv);
-        // Publish Media, save published_id, update published status to Y in CSV
-        const published_id = (yield (0, publishMedia_1.publishMedia)(creation_id));
-        posts[currentPostId].published = "Y";
-        posts[currentPostId].published_id = published_id;
-        const postsInCsv2 = new json2csv_1.Parser({
-            fields: CSVFields_1.csvFields,
-        }).parse(posts);
-        fs_1.default.writeFileSync(csvFilePath, postsInCsv2);
         return res.status(200).json({
-            message: "Post Published Successfully",
+            message: "Media Uploaded successfully",
+            creation_id,
         });
     }
     catch (error) {
@@ -63,4 +58,4 @@ const publishPost = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
     }
 });
-exports.publishPost = publishPost;
+exports.uploadMediaContainer = uploadMediaContainer;

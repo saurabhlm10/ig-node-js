@@ -1,15 +1,15 @@
-import csv from "csvtojson";
-import { Parser } from "json2csv";
-import path from "path";
-import fs from "fs";
-import { uploadMedia } from "../../helpers/uploadMedia";
-import { publishMedia } from "../../helpers/publishMedia";
 import { Request, Response } from "express";
-import { AxiosError } from "axios";
+import path from "path";
+import csv from "csvtojson";
+import { uploadMedia } from "../../helpers/uploadMedia";
+import { Parser } from "json2csv";
 import { csvFields } from "../../constants/CSVFields";
+import fs from "fs";
+import { AxiosError } from "axios";
 
-export const uploadAndPublishPost = async (req: Request, res: Response) => {
+export const uploadMediaContainer = async (req: Request, res: Response) => {
   try {
+    console.log("uploadMediaContainer");
     const csvFilePath = path.join(process.cwd(), "/src/files", "Example.csv");
 
     const posts: PostFromCSV[] = await csv().fromFile(csvFilePath);
@@ -18,9 +18,10 @@ export const uploadAndPublishPost = async (req: Request, res: Response) => {
     const currentPostId: number = posts.findIndex((post) => {
       return post.uploaded === "";
     });
-
     if (currentPostId === -1) {
-      return new Response("No Posts To Be Uploaded", { status: 404 });
+      return res.status(400).json({
+        message: "No Posts To Be Uploaded",
+      });
     }
 
     const mediaToUpload = posts[currentPostId].media_url;
@@ -28,7 +29,8 @@ export const uploadAndPublishPost = async (req: Request, res: Response) => {
     // Upload Media, save creation_id and uploaded status to CSV
     const creation_id = (await uploadMedia(
       mediaToUpload,
-      posts[currentPostId].caption
+      posts[currentPostId].caption,
+      res
     )) as string;
 
     posts[currentPostId].creation_id = creation_id;
@@ -39,19 +41,9 @@ export const uploadAndPublishPost = async (req: Request, res: Response) => {
     }).parse(posts);
     fs.writeFileSync(csvFilePath, postsInCsv);
 
-    // Publish Media, save published_id, update published status to Y in CSV
-    const published_id = (await publishMedia(creation_id)) as string;
-
-    posts[currentPostId].published = "Y";
-    posts[currentPostId].published_id = published_id;
-
-    const postsInCsv2 = new Parser({
-      fields: csvFields,
-    }).parse(posts);
-    fs.writeFileSync(csvFilePath, postsInCsv2);
-
     return res.status(200).json({
-      message: "Post Published Successfully",
+      message: "Media Uploaded successfully",
+      creation_id,
     });
   } catch (error) {
     if (error instanceof AxiosError) {

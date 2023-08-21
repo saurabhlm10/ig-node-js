@@ -1,11 +1,13 @@
 import express from "express";
-import { uploadAndPublishPost } from "../controllers/postControllers/uploadAndPublishPost";
-import { cloudUpload } from "../controllers/postControllers/cloudUpload";
-import { fileGetter } from "../middleware/post/upload/fileGetter";
+import { publishPost } from "../controllers/postControllers/publishPost";
+import { uploadMediaContainer } from "../controllers/postControllers/uploadMediaContainer";
+import { videoValidator } from "../middleware/post/upload/video-validator";
+import { uploadToCloud } from "../controllers/postControllers/uploadToCloud";
 
 const router = express.Router();
 
-router.get("/uploadandpublish", fileGetter, uploadAndPublishPost);
-router.get("/allmediauploader", fileGetter, cloudUpload);
+router.get("/publishPost", publishPost);
+router.get("/uploadMediaContainer", uploadMediaContainer);
+router.get("/uploadToCloud", videoValidator, uploadToCloud);
 
 export default router;

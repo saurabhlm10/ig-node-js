@@ -36,7 +36,8 @@ exports.publishMedia = void 0;
 const axios_1 = __importStar(require("axios"));
 const isUploadSuccessful_1 = require("../utils/isUploadSuccessful");
 const publishMedia = (creation_id) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _a, _b;
+    console.log("publishMedia");
     const access_token = process.env.ACCESS_TOKEN;
     const ig_user_id = process.env.IG_USER_ID;
     const publish_url = `https://graph.facebook.com/v17.0/${ig_user_id}/media_publish`;
@@ -50,22 +51,22 @@ const publishMedia = (creation_id) => __awaiter(void 0, void 0, void 0, function
     // }
     const checkStatusUri = `https://graph.facebook.com/v17.0/${creation_id}?fields=status_code&access_token=${access_token}`;
     const isUploaded = yield (0, isUploadSuccessful_1.isUploadSuccessful)(0, checkStatusUri);
+    console.log("1");
     // When uploaded successfully, publish the video
     try {
         if (isUploaded) {
             const publishVideoUri = `https://graph.facebook.com/v1.0/${ig_user_id}/media_publish?creation_id=${creation_id}&access_token=${access_token}`;
             const publishResponse = yield axios_1.default.post(publishVideoUri);
-            console.log(publishResponse.data);
             return publishResponse.data.id;
         }
     }
     catch (error) {
-        // console.log(error)
         if (error instanceof axios_1.AxiosError) {
-            console.log((_a = error.response) === null || _a === void 0 ? void 0 : _a.data);
+            console.log(JSON.stringify((_a = error.response) === null || _a === void 0 ? void 0 : _a.data));
+            throw new Error((_b = error.response) === null || _b === void 0 ? void 0 : _b.data);
         }
         if (error instanceof Error) {
-            console.log(error.message);
+            throw new Error(error.message);
         }
     }
 });

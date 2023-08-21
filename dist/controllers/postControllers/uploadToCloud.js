@@ -12,18 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.fileGetter = void 0;
+exports.uploadToCloud = void 0;
 const path_1 = __importDefault(require("path"));
 const csvtojson_1 = __importDefault(require("csvtojson"));
-const axios_1 = require("axios");
 const fs_1 = __importDefault(require("fs"));
 const cloudinary_1 = require("cloudinary/");
-const CSVFields_1 = require("../../../constants/CSVFields");
+const CSVFields_1 = require("../../constants/CSVFields");
 const json2csv_1 = require("json2csv");
-const responseObject = {
-    success: false,
-    message: "",
-};
 // Configure Cloudinary
 cloudinary_1.v2.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -33,54 +28,71 @@ cloudinary_1.v2.config({
 function _wait(n) {
     return new Promise((resolve) => setTimeout(resolve, n));
 }
-const fileGetter = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    console.log('fileGetter');
-    // Read CSV
-    const csvFilePath = path_1.default.join(process.cwd(), "/src/files", "Example.csv");
-    const posts = yield (0, csvtojson_1.default)().fromFile(csvFilePath);
-    // Find index with media_url == ""
-    const currentPostId = posts.findIndex((post) => {
-        return post.media_url === "";
-    });
-    if (currentPostId === -1) {
-        return next();
-    }
-    const video_url = posts[currentPostId].video_url;
+const uploadToCloud = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log("uploadToCloud");
     try {
-        // Upload video to cloudinary
-        const cloudinaryUploadResponse = yield cloudinary_1.v2.uploader.upload(video_url, { resource_type: "video" });
-        let retryCount = 0;
-        console.log("cloudinaryUploadResponse", cloudinaryUploadResponse);
-        while (!cloudinaryUploadResponse) {
-            retryCount++;
-            if (retryCount > 30) {
-                return res.status(400).json({
-                    message: "Video Upload Failed",
-                });
-            }
-            yield _wait(3000);
+        // return res.send('OK')
+        // Read CSV
+        // return res.send('OK')
+        const csvFilePath = path_1.default.join(process.cwd(), "/src/files", "Example.csv");
+        console.log("csvFilePath", csvFilePath);
+        const posts = yield (0, csvtojson_1.default)().fromFile(csvFilePath);
+        console.log("1");
+        // Find index with media_url == ""
+        const currentPostId = posts.findIndex((post) => {
+            return post.media_url === "";
+        });
+        console.log("2");
+        if (currentPostId === -1) {
+            return res.status(400).json({
+                message: "No Posts To Be Uploaded",
+            });
         }
-        console.log("cloudinaryUploadResponse", cloudinaryUploadResponse);
+        console.log("3");
+        const video_url = posts[currentPostId].video_url;
+        // Upload video to cloudinary
+        // const cloudinaryUploadResponse = {
+        //   secure_url: "hello.com",
+        // };
+        const cloudinaryUploadResponse = yield cloudinary_1.v2.uploader.upload(video_url, { resource_type: "video" });
+        console.log("3");
+        let retryCount = 0;
+        // console.log("cloudinaryUploadResponse", cloudinaryUploadResponse);
+        // while (!cloudinaryUploadResponse) {
+        //   console.log(retryCount);
+        //   retryCount++;
+        //   if (retryCount > 30) {
+        //     return res.status(400).json({
+        //       message: "Video Upload Failed",
+        //     });
+        //   }
+        //   await _wait(3000);
+        // }
+        console.log("cloudinaryUploadResponse", cloudinaryUploadResponse.secure_url);
         // Update To CSV
         posts[currentPostId].media_url = cloudinaryUploadResponse.secure_url;
+        console.log("4");
         const postsInCsv = new json2csv_1.Parser({
             fields: CSVFields_1.csvFields,
         }).parse(posts);
         fs_1.default.writeFileSync(csvFilePath, postsInCsv);
-        return next();
+        console.log("5");
+        return res.status(200).json({
+            message: "Video Upload Successful",
+            media_url: posts[currentPostId].media_url,
+        });
     }
     catch (error) {
-        if (error instanceof axios_1.AxiosError) {
-            return res.status(403).json({
-                message: (_a = error.response) === null || _a === void 0 ? void 0 : _a.data,
-            });
-        }
+        console.log("error");
         if (error instanceof Error) {
-            return res.status(403).json({
+            return res.status(400).json({
                 message: error.message,
             });
         }
+        return res.status(400).json({
+            message: "Video Upload Failed",
+            error,
+        });
     }
 });
-exports.fileGetter = fileGetter;
+exports.uploadToCloud = uploadToCloud;

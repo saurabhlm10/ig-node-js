@@ -34,38 +34,39 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.uploadMedia = void 0;
 const axios_1 = __importStar(require("axios"));
-const uploadMedia = (image_url, caption) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+const uploadMedia = (media_url, caption, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a, _b;
+    console.log("uploadMedia");
     const access_token = process.env.ACCESS_TOKEN;
     const ig_user_id = process.env.IG_USER_ID;
-    const post_url = `https://graph.facebook.com/v17.0/${ig_user_id}/media?media_type=REELS`;
-    console.log(image_url);
+    console.log(access_token);
+    console.log(media_url);
     const payload = {
-        video_url: image_url,
+        video_url: media_url,
         caption,
         access_token: access_token,
     };
+    console.log(payload);
     // try {
     //   const r = await axios.post(post_url, payload);
     //   return r.data.id;
     // }
-    const coverUrl = '';
-    const thumbOffset = '';
-    const locationId = '';
+    const coverUrl = "";
+    const thumbOffset = "";
+    const locationId = "";
     const uploadParamsString = `caption=${caption}&cover_url=${coverUrl}&thumb_offset=${thumbOffset}&location_id=${locationId}&access_token=${access_token}`;
-    const uploadVideoUri = `https://graph.facebook.com/v17.0/${ig_user_id}/media?media_type=REELS&video_url=${image_url}&${uploadParamsString}`;
+    const uploadVideoUri = `https://graph.facebook.com/v17.0/${ig_user_id}/media?media_type=REELS&video_url=${media_url}&${uploadParamsString}`;
     try {
         const uploadResponse = yield axios_1.default.post(uploadVideoUri);
-        console.log(uploadResponse.data);
         return uploadResponse.data.id;
     }
     catch (error) {
-        // console.log(error);
         if (error instanceof axios_1.AxiosError) {
-            console.log((_a = error.response) === null || _a === void 0 ? void 0 : _a.data);
+            console.log(JSON.stringify((_a = error.response) === null || _a === void 0 ? void 0 : _a.data));
+            throw new Error((_b = error.response) === null || _b === void 0 ? void 0 : _b.data);
         }
         if (error instanceof Error) {
-            console.log(error.message);
+            throw new Error(error.message);
         }
     }
 });

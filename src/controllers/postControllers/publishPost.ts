@@ -50,6 +50,7 @@ export const publishPost = async (req: Request, res: Response) => {
 
     return res.status(200).json({
       message: "Post Published Successfully",
+      published_id,
     });
   } catch (error) {
     if (error instanceof AxiosError) {

@@ -54,11 +54,11 @@ const publishMedia = (creation_id) => __awaiter(void 0, void 0, void 0, function
     console.log("1");
     // When uploaded successfully, publish the video
     try {
-        if (isUploaded) {
-            const publishVideoUri = `https://graph.facebook.com/v1.0/${ig_user_id}/media_publish?creation_id=${creation_id}&access_token=${access_token}`;
-            const publishResponse = yield axios_1.default.post(publishVideoUri);
-            return publishResponse.data.id;
-        }
+        // if (isUploaded) {
+        const publishVideoUri = `https://graph.facebook.com/v1.0/${ig_user_id}/media_publish?creation_id=${creation_id}&access_token=${access_token}`;
+        const publishResponse = yield axios_1.default.post(publishVideoUri);
+        return publishResponse.data.id;
+        // }
     }
     catch (error) {
         if (error instanceof axios_1.AxiosError) {

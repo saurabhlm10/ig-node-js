@@ -26,12 +26,12 @@ export const publishMedia = async (creation_id: string) => {
   // When uploaded successfully, publish the video
 
   try {
-    if (isUploaded) {
-      const publishVideoUri = `https://graph.facebook.com/v1.0/${ig_user_id}/media_publish?creation_id=${creation_id}&access_token=${access_token}`;
-      const publishResponse = await axios.post(publishVideoUri);
+    // if (isUploaded) {
+    const publishVideoUri = `https://graph.facebook.com/v1.0/${ig_user_id}/media_publish?creation_id=${creation_id}&access_token=${access_token}`;
+    const publishResponse = await axios.post(publishVideoUri);
 
-      return publishResponse.data.id;
-    }
+    return publishResponse.data.id;
+    // }
   } catch (error) {
     if (error instanceof AxiosError) {
       console.log(JSON.stringify(error.response?.data));

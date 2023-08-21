@@ -49,6 +49,7 @@ const publishPost = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         console.log("5");
         return res.status(200).json({
             message: "Post Published Successfully",
+            published_id,
         });
     }
     catch (error) {

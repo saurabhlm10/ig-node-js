@@ -31,6 +31,7 @@ const publishPost = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
             return post.published === "";
         });
         console.log(currentPostId);
+        console.log("currentPostId", currentPostId);
         console.log("2");
         if (currentPostId === -1) {
             return new Response("No Posts To Be Uploaded", { status: 404 });

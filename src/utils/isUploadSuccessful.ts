@@ -21,9 +21,13 @@ export const isUploadSuccessful = async (
   checkStatusUri: string
 ) => {
   try {
-    console.log(retryCount)
+    console.log(retryCount);
     if (retryCount > 30) return false;
     const response = await axios.get(checkStatusUri);
+    console.log(response.data);
+    if (response.data.status_code == "PUBLISHED") {
+      throw new Error("Post Already Published");
+    }
     if (response.data.status_code != "FINISHED") {
       await _wait(3000);
       await isUploadSuccessful(retryCount + 1, checkStatusUri);

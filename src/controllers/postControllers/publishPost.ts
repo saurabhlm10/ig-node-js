@@ -23,6 +23,8 @@ export const publishPost = async (req: Request, res: Response) => {
 
     console.log(currentPostId);
 
+    console.log("currentPostId", currentPostId);
+
     console.log("2");
 
     if (currentPostId === -1) {

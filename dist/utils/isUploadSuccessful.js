@@ -35,6 +35,10 @@ const isUploadSuccessful = (retryCount, checkStatusUri) => __awaiter(void 0, voi
         if (retryCount > 30)
             return false;
         const response = yield axios_1.default.get(checkStatusUri);
+        console.log(response.data);
+        if (response.data.status_code == "PUBLISHED") {
+            throw new Error("Post Already Published");
+        }
         if (response.data.status_code != "FINISHED") {
             yield _wait(3000);
             yield (0, exports.isUploadSuccessful)(retryCount + 1, checkStatusUri);

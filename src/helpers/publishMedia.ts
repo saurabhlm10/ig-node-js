@@ -18,8 +18,8 @@ export const publishMedia = async (creation_id: string) => {
   //   return r.data.id;
   // }
 
-  const checkStatusUri = `https://graph.facebook.com/v17.0/${creation_id}?fields=status_code&access_token=${access_token}`;
-  const isUploaded = await isUploadSuccessful(0, checkStatusUri);
+  // const checkStatusUri = `https://graph.facebook.com/v17.0/${creation_id}?fields=status_code&access_token=${access_token}`;
+  // const isUploaded = await isUploadSuccessful(0, checkStatusUri);
 
   console.log("1");
 

@@ -6,4 +6,5 @@ app.get("/", (req, res) => {
   res.send("Hello, TypeScript Express Server!");
 });
 
+
 export default app;

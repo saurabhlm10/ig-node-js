@@ -6,8 +6,8 @@ import { uploadToCloud } from "../controllers/postControllers/uploadToCloud";
 
 const router = express.Router();
 
-router.get("/publishPost", publishPost);
-router.get("/uploadMediaContainer", uploadMediaContainer);
-router.get("/uploadToCloud", videoValidator, uploadToCloud);
+router.get("/publishPost/:t", publishPost);
+router.get("/uploadMediaContainer/:t", uploadMediaContainer);
+router.get("/uploadToCloud/:t", videoValidator, uploadToCloud);
 
 export default router;

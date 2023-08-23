@@ -5,7 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const app = (0, express_1.default)();
-app.get("/", (req, res) => {
+app.get("/:t", (req, res) => {
+    console.log(req.params);
     res.send("Hello, TypeScript Express Server!");
 });
 exports.default = app;

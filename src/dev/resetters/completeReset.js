@@ -23,11 +23,11 @@ async function completeReset(postId = 0) {
 
   const posts = await csv().fromFile(csvFilePath);
 
-  posts[postId].media_url = "";
+  // posts[postId].media_url = "";
+  posts[postId].uploaded = "";
   posts[postId].creation_id = "";
   posts[postId].published = "";
   posts[postId].published_id = "";
-  posts[postId].uploaded = "";
 
   const postsInCsv = new Parser({
     fields: csvFields,
@@ -42,11 +42,11 @@ async function completeResetAll() {
 
   posts.forEach((post) => {
     console.log(post)
-    post.media_url = "";
+    // post.media_url = "";
+    post.uploaded = "";
     post.creation_id = "";
     post.published = "";
     post.published_id = "";
-    post.uploaded = "";
   })
 
 
@@ -59,7 +59,7 @@ async function completeResetAll() {
 
 
 // const postId = Number(prompt("Enter postId to reset: "));
-const postId = 0
+const postId = -1
 // completeReset(postId);
 
 if (postId === -1) {

@@ -1,14 +1,21 @@
 import axios, { AxiosError } from "axios";
 import { isUploadSuccessful } from "../utils/isUploadSuccessful";
 
-export const publishMedia = async (creation_id: string) => {
+export const publishMedia = async (
+  creation_id: string,
+  currentPostId: number
+) => {
   console.log("publishMedia");
   const access_token = process.env.ACCESS_TOKEN;
   const ig_user_id = process.env.IG_USER_ID;
 
   try {
     const checkStatusUri = `https://graph.facebook.com/v17.0/${creation_id}?fields=status_code&access_token=${access_token}`;
-    const isUploaded = await isUploadSuccessful(0, checkStatusUri);
+    const isUploaded = await isUploadSuccessful(
+      0,
+      checkStatusUri,
+      currentPostId
+    );
 
     console.log("1");
 
@@ -22,7 +29,6 @@ export const publishMedia = async (creation_id: string) => {
   } catch (error) {
     if (error instanceof AxiosError) {
       console.log(JSON.stringify(error.response?.data));
-
       throw new Error(error.response?.data);
     }
     if (error instanceof Error) {

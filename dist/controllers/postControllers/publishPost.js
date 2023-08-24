@@ -39,7 +39,7 @@ const publishPost = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const creation_id = posts[currentPostId].creation_id;
         console.log(creation_id);
         // Publish Media, save published_id, update published status to Y in CSV
-        const published_id = (yield (0, publishMedia_1.publishMedia)(creation_id));
+        const published_id = (yield (0, publishMedia_1.publishMedia)(creation_id, currentPostId));
         console.log("4");
         posts[currentPostId].published = "Y";
         posts[currentPostId].published_id = published_id;

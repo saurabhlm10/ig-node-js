@@ -14,6 +14,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.isUploadSuccessful = void 0;
 const axios_1 = __importDefault(require("axios"));
+const path_1 = __importDefault(require("path"));
+const fs_1 = __importDefault(require("fs"));
+const csvtojson_1 = __importDefault(require("csvtojson"));
+const json2csv_1 = require("json2csv");
+const CSVFields_1 = require("../constants/CSVFields");
 /**
  * Setting retries with 3 seconds delay, as async video upload may take a while in the backed to return success
  * @param {*} n
@@ -29,7 +34,7 @@ function _wait(n) {
  * @param {*} checkStatusUri
  * @returns Promise<boolean>
  */
-const isUploadSuccessful = (retryCount, checkStatusUri) => __awaiter(void 0, void 0, void 0, function* () {
+const isUploadSuccessful = (retryCount, checkStatusUri, currentPostId) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         console.log(retryCount);
         if (retryCount > 30)
@@ -37,11 +42,21 @@ const isUploadSuccessful = (retryCount, checkStatusUri) => __awaiter(void 0, voi
         const response = yield axios_1.default.get(checkStatusUri);
         console.log(response.data);
         if (response.data.status_code == "PUBLISHED") {
+            // Update the published status of the post and save to csv
+            const csvFilePath = path_1.default.join(process.cwd(), "/src/files", "Example.csv");
+            console.log(csvFilePath);
+            const posts = yield (0, csvtojson_1.default)().fromFile(csvFilePath);
+            posts[currentPostId].published = "Y";
+            // posts[currentPostId].published_id = published_id;
+            const postsInCsv2 = new json2csv_1.Parser({
+                fields: CSVFields_1.csvFields,
+            }).parse(posts);
+            fs_1.default.writeFileSync(csvFilePath, postsInCsv2);
             throw new Error("Post Already Published");
         }
         if (response.data.status_code != "FINISHED") {
             yield _wait(3000);
-            yield (0, exports.isUploadSuccessful)(retryCount + 1, checkStatusUri);
+            yield (0, exports.isUploadSuccessful)(retryCount + 1, checkStatusUri, currentPostId);
         }
         return true;
     }

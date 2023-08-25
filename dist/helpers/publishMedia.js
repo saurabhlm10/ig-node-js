@@ -41,7 +41,7 @@ const publishMedia = (creation_id, currentPostId) => __awaiter(void 0, void 0, v
     const access_token = process.env.ACCESS_TOKEN;
     const ig_user_id = process.env.IG_USER_ID;
     try {
-        const checkStatusUri = `https://graph.facebook.com/v17.0/${creation_id}?fields=status_code&access_token=${access_token}`;
+        const checkStatusUri = `https://graph.facebook.com/v17.0/${creation_id}?fields=status,status_code&access_token=${access_token}`;
         const isUploaded = yield (0, isUploadSuccessful_1.isUploadSuccessful)(0, checkStatusUri, currentPostId);
         console.log("1");
         // When uploaded successfully, publish the video

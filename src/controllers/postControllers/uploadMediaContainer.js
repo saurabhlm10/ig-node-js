@@ -5,41 +5,48 @@ const { Parser } = require("json2csv");
 const { csvFields } = require("../../constants/CSVFields");
 const fs = require("fs");
 const { AxiosError } = require("axios");
+const Post = require("../../model/Post");
 
 
 exports.uploadMediaContainer = async (req, res) => {
   try {
     console.log("uploadMediaContainer");
-    const csvFilePath = path.join(process.cwd(), "/src/files", "Example.csv");
 
-    const posts = await csv().fromFile(csvFilePath);
+    const currentPost = await Post.findOne({
+      status: 'uploaded-to-cloud'
+    })
 
-    // Find Post with uploaded = none
-    const currentPostId = posts.findIndex((post) => {
-      return post.uploaded === "";
-    });
-    if (currentPostId === -1) {
+
+    if (currentPost == {}) {
       return res.status(400).json({
         message: "No Posts To Be Uploaded",
       });
     }
 
-    const mediaToUpload = posts[currentPostId].media_url;
+    const mediaToUpload = currentPost.media_url;
 
     // Upload Media, save creation_id and uploaded status to CSV
     const creation_id = (await uploadMedia(
       mediaToUpload,
-      posts[currentPostId].caption,
+      currentPost.caption,
       res
     ));
 
-    posts[currentPostId].creation_id = creation_id;
-    posts[currentPostId].uploaded = "Y";
+    if (!creation_id) {
+      return res.status(400).json({
+        message: "Failed to upload media",
+      });
+    }
 
-    const postsInCsv = new Parser({
-      fields: csvFields,
-    }).parse(posts);
-    fs.writeFileSync(csvFilePath, postsInCsv);
+    console.log(creation_id)
+
+    currentPost.creation_id = creation_id;
+
+
+
+    currentPost.status = 'uploaded-media-container';
+
+    const updatedPost = await Post.findByIdAndUpdate(currentPost._id, currentPost);
 
     return res.status(200).json({
       message: "Media Uploaded successfully",

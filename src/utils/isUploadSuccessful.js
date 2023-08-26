@@ -1,9 +1,5 @@
 const axios = require("axios");
-const path = require("path");
-const fs = require("fs");
-const csv = require("csvtojson");
-const { Parser } = require("json2csv");
-const { csvFields } = require("../constants/CSVFields");
+const Post = require("../model/Post");
 
 
 /**
@@ -19,18 +15,10 @@ async function setPublishedInvalid(
   currentPostId,
   statusMessage
 ) {
-  const csvFilePath = path.join(process.cwd(), "/src/files", "Example.csv");
 
-  console.log(csvFilePath);
-
-  const posts = await csv().fromFile(csvFilePath);
-
-  posts[currentPostId].published = statusMessage;
-
-  const postsInCsv2 = new Parser({
-    fields: csvFields,
-  }).parse(posts);
-  fs.writeFileSync(csvFilePath, postsInCsv2);
+  const post = await Post.findById(currentPostId);
+  post.status = statusMessage;
+  await post.save();
 }
 
 /**
@@ -40,7 +28,7 @@ async function setPublishedInvalid(
  * @param {*} checkStatusUri
  * @returns Promise<boolean>
  */
-exports.isUploadSuccessful = async (
+const isUploadSuccessful = async (
   retryCount,
   checkStatusUri,
   currentPostId
@@ -52,7 +40,7 @@ exports.isUploadSuccessful = async (
     console.log(response.data);
     if (response.data.status_code == "PUBLISHED") {
       // Update the published status of the post and save to csv
-      setPublishedInvalid(currentPostId, "Y");
+      // setPublishedInvalid(currentPostId, "Y");
       throw new Error("Post Already Published");
     }
     // if (response.data.status_code == "ERROR") {
@@ -72,3 +60,6 @@ exports.isUploadSuccessful = async (
     throw e;
   }
 };
+
+
+module.exports = { isUploadSuccessful }

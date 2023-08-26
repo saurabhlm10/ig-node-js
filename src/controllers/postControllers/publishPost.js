@@ -1,53 +1,39 @@
-const csv = require("csvtojson");
-const { Parser } = require("json2csv");
-const path = require("path");
-const fs = require("fs");
 const { publishMedia } = require("../../helpers/publishMedia");
 const { AxiosError } = require("axios");
-const { csvFields } = require("../../constants/CSVFields");
+const Post = require("../../model/Post");
 
 exports.publishPost = async (req, res) => {
   try {
     console.log("1");
 
-    const csvFilePath = path.join(process.cwd(), "/src/files", "Example.csv");
+    const currentPost = await Post.findOne({
+      status: 'uploaded-media-container'
+    })
 
-    const posts = await csv().fromFile(csvFilePath);
-
-    // Find Post with uploaded = none
-    const currentPostId = posts.findIndex((post) => {
-      return post.published === "";
-    });
-
-    console.log(currentPostId);
-
-    console.log("currentPostId", currentPostId);
+    console.log(currentPost)
 
     console.log("2");
 
-    if (currentPostId === -1) {
-      return new Response("No Posts To Be Uploaded", { status: 404 });
+    if (!currentPost) {
+      return res.status(404).json({ message: "No Posts To Be Uploaded" });
     }
 
-    const creation_id = posts[currentPostId].creation_id;
+    const creation_id = currentPost.creation_id;
 
-    console.log(creation_id);
+    console.log('creation_id', creation_id);
 
     // Publish Media, save published_id, update published status to Y in CSV
     const published_id = (await publishMedia(
       creation_id,
-      currentPostId
+      currentPost._id
     ));
 
     console.log("4");
 
-    posts[currentPostId].published = "Y";
-    posts[currentPostId].published_id = published_id;
+    currentPost.status = "published";
+    currentPost.published_id = published_id;
 
-    const postsInCsv2 = new Parser({
-      fields: csvFields,
-    }).parse(posts);
-    fs.writeFileSync(csvFilePath, postsInCsv2);
+    const updatedPost = await Post.findByIdAndUpdate(currentPost._id, currentPost);
 
     console.log("5");
 

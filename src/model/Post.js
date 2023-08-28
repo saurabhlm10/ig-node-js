@@ -31,14 +31,14 @@ const postSchema = new mongoose.Schema({
 
     status: {
         type: String,
-        enum: ['uploaded-to-cloud', "uploaded-media-container", "published"],
+        enum: ['uploaded-to-cloud', "uploaded-media-container", "published", "error"],
         default: 'uploaded-to-cloud'
     },
 
     creation_id: {
         type: String
     },
-    
+
     published_id: {
         type: String
     },

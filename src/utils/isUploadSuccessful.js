@@ -11,13 +11,18 @@ function _wait(n) {
   return new Promise((resolve) => setTimeout(resolve, n));
 }
 
-async function setPublishedInvalid(
+async function setStatus(
   currentPostId,
   statusMessage
 ) {
-
   const post = await Post.findById(currentPostId);
-  post.status = statusMessage;
+
+  switch (statusMessage) {
+    case "PUBLISHED": post.status = 'published';
+    case "EXPIRED": post.status = 'uploaded-to-cloud'
+    case "ERROR": post.status = 'error';
+  }
+
   await post.save();
 }
 
@@ -38,19 +43,11 @@ const isUploadSuccessful = async (
     if (retryCount > 30) return false;
     const response = await axios.get(checkStatusUri);
     console.log(response.data);
-    if (response.data.status_code == "PUBLISHED") {
-      // Update the published status of the post and save to csv
-      // setPublishedInvalid(currentPostId, "Y");
-      throw new Error("Post Already Published");
+    if (response.data.status_code == "PUBLISHED" || response.data.status_code == "EXPIRED" || response.data.status_code == "ERROR") {
+      // Update the published status of the post and save to DB
+      await setStatus(currentPostId, response.data.status_code);
+      return
     }
-    // if (response.data.status_code == "ERROR") {
-    //   if(retryCount < 30){
-
-    //   }
-    //   // Update the published status of the post and save to csv
-    //   setPublishedInvalid(currentPostId, "Invalid");
-    //   throw new Error("Error occured in publishing Post");
-    // }
     if (response.data.status_code != "FINISHED") {
       await _wait(3000);
       await isUploadSuccessful(retryCount + 1, checkStatusUri, currentPostId);

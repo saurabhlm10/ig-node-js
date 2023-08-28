@@ -33,7 +33,7 @@ exports.publishPost = async (req, res) => {
     currentPost.status = "published";
     currentPost.published_id = published_id;
 
-    const updatedPost = await Post.findByIdAndUpdate(currentPost._id, currentPost);
+    await currentPost.save()
 
     console.log("5");
 

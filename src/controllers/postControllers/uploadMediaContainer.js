@@ -1,9 +1,4 @@
-const path = require("path");
-const csv = require("csvtojson");
 const { uploadMedia } = require("../../helpers/uploadMedia");
-const { Parser } = require("json2csv");
-const { csvFields } = require("../../constants/CSVFields");
-const fs = require("fs");
 const { AxiosError } = require("axios");
 const Post = require("../../model/Post");
 
@@ -16,8 +11,9 @@ exports.uploadMediaContainer = async (req, res) => {
       status: 'uploaded-to-cloud'
     })
 
+    console.log(currentPost._id)
 
-    if (currentPost == {}) {
+    if (!currentPost) {
       return res.status(400).json({
         message: "No Posts To Be Uploaded",
       });
@@ -38,15 +34,11 @@ exports.uploadMediaContainer = async (req, res) => {
       });
     }
 
-    console.log(creation_id)
-
     currentPost.creation_id = creation_id;
-
-
 
     currentPost.status = 'uploaded-media-container';
 
-    const updatedPost = await Post.findByIdAndUpdate(currentPost._id, currentPost);
+    await currentPost.save();
 
     return res.status(200).json({
       message: "Media Uploaded successfully",

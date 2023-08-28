@@ -43,10 +43,14 @@ const isUploadSuccessful = async (
     if (retryCount > 30) return false;
     const response = await axios.get(checkStatusUri);
     console.log(response.data);
-    if (response.data.status_code == "PUBLISHED" || response.data.status_code == "EXPIRED" || response.data.status_code == "ERROR") {
+    if (response.data.status_code == "PUBLISHED" || response.data.status_code == "EXPIRED") {
       // Update the published status of the post and save to DB
       await setStatus(currentPostId, response.data.status_code);
       return
+    }
+    if (response.data.status_code == "ERROR") {
+      await setStatus(currentPostId, response.data.status_code);
+      throw new Error('Error', response.data.status)
     }
     if (response.data.status_code != "FINISHED") {
       await _wait(3000);

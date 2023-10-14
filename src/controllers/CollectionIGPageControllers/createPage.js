@@ -1,4 +1,4 @@
-const IGPage = require("../../model/IGPage");
+const CollectionIGPage = require("../../model/CollectionIGPage");
 
 exports.createPage = async (req, res) => {
   const { username, followersCount } = req.body;
@@ -12,7 +12,7 @@ exports.createPage = async (req, res) => {
 
   try {
     // Create a new page
-    const page = new IGPage({
+    const page = new CollectionIGPage({
       username: username,
       followersCount: followersCount,
     });

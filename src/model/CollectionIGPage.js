@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const IGPageSchema = new mongoose.Schema(
+const CollectionIGPageSchema = new mongoose.Schema(
   {
     username: {
       type: String,
@@ -20,11 +20,11 @@ const IGPageSchema = new mongoose.Schema(
   }
 );
 
-IGPageSchema.pre("save", function (next) {
+CollectionIGPageSchema.pre("save", function (next) {
   this.link = "https://www.instagram.com/" + this.username;
   next();
 });
 
-const IGPage = mongoose.model("IGPage", IGPageSchema);
+const CollectionIGPage = mongoose.model("CollectionIGPage", CollectionIGPageSchema);
 
-module.exports = IGPage;
+module.exports = CollectionIGPage;

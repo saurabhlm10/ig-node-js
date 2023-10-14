@@ -1,7 +1,7 @@
 const { months } = require("../../constants/months");
 const { pages } = require("../../constants/pages");
 const { getPageInfo } = require("../../helpers/getPageInfo");
-const IGPage = require("../../model/IGPage");
+const CollectionIGPage = require("../../model/CollectionIGPage");
 const MonthStatus = require("../../model/MonthStatus");
 
 exports.updateAllPages = async (req, res) => {
@@ -32,7 +32,7 @@ exports.updateAllPages = async (req, res) => {
       updatedPages.map(async (page) => {
         const { username, followersCount } = page;
 
-        const updatedPage = await IGPage.findOneAndUpdate(
+        const updatedPage = await CollectionIGPage.findOneAndUpdate(
           { username },
           {
             followersCount,

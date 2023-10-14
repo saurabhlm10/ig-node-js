@@ -1,8 +1,8 @@
 const express = require("express");
-const { createPage } = require("../controllers/IGPageControllers/createPage");
+const { createPage } = require("../controllers/CollectionIGPageControllers/createPage");
 const {
   updateAllPages,
-} = require("../controllers/IGPageControllers/updateAllPages");
+} = require("../controllers/CollectionIGPageControllers/updateAllPages");
 const router = express.Router();
 
 router.post("/createPage", createPage);

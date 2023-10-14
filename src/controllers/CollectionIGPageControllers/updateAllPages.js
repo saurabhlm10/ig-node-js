@@ -26,7 +26,11 @@ exports.updateAllPages = async (req, res) => {
       });
     }
 
+    console.log("Updating Pages for", currentMonthName);
+
     const updatedPages = await getPageInfo(pages);
+
+    console.log("Got Pages From Apify. Updating DB.");
 
     const updatedPagesInDB = await Promise.all(
       updatedPages.map(async (page) => {
@@ -42,6 +46,8 @@ exports.updateAllPages = async (req, res) => {
         return updatedPage;
       })
     );
+
+    console.log("DB Updated");
 
     currentMonthInDB.status = "success";
     currentMonthInDB.statusMessage = "Updated Successfully";
@@ -62,7 +68,5 @@ exports.updateAllPages = async (req, res) => {
         statusMessage: error.message,
       }
     );
-
-    return res.status(500).send({ message: "Internal Server Error." });
   }
 };

@@ -24,7 +24,7 @@ exports.updateAllPages = async (req, res) => {
     console.log("Updating Pages for ", currentMonthName);
     console.log(currentMonthInDB);
 
-    res.status(200).send("Updating Pages for"+ currentMonthName);
+    // res.status(200).send("Updating Pages for"+ currentMonthName);
 
     const updatedPages = await getPageInfo(pages);
 
@@ -51,6 +51,8 @@ exports.updateAllPages = async (req, res) => {
     currentMonthInDB.statusMessage = "Updated Successfully";
 
     await currentMonthInDB.save();
+
+    return res.status(200).send('DB Updated')
   } catch (error) {
     console.log(error.message);
 

@@ -6,8 +6,6 @@ const MonthStatus = require("../../model/MonthStatus");
 
 exports.updateAllPages = async (req, res) => {
   try {
-    res.status(200).send("Updating Pages");
-
     const date = new Date();
     const currentMonthName = months[date.getMonth()];
 
@@ -15,9 +13,6 @@ exports.updateAllPages = async (req, res) => {
       {
         name: currentMonthName,
       },
-      {
-        new: true,
-      }
     );
 
     if (!currentMonthInDB) {
@@ -26,7 +21,10 @@ exports.updateAllPages = async (req, res) => {
       });
     }
 
-    console.log("Updating Pages for", currentMonthName);
+    console.log("Updating Pages for ", currentMonthName);
+    console.log(currentMonthInDB);
+
+    res.status(200).send("Updating Pages for"+ currentMonthName);
 
     const updatedPages = await getPageInfo(pages);
 

@@ -1,67 +1,83 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
+const { months } = require("../constants/months");
 
-const postSchema = new mongoose.Schema({
+const postSchema = new mongoose.Schema(
+  {
     source_reel_url: {
-        type: String,
-        required: true,
-        unique: true
+      type: String,
+      required: true,
+      unique: true,
     },
 
     video_url: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
 
-    pageId: {
-        type: String
+    pageName: {
+      type: String,
+      required: true,
+    },
+
+    publishMonth: {
+      type: String,
+      required: true,
+      enum: months,
     },
 
     caption: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
 
     media_url: {
-        type: String
+      type: String,
     },
 
     mediatype: {
-        type: String
+      type: String,
     },
 
     status: {
-        type: String,
-        enum: ['uploaded-to-cloud', "uploaded-media-container", "published", "error"],
-        default: 'uploaded-to-cloud'
+      type: String,
+      enum: [
+        "uploaded-to-cloud",
+        "uploaded-media-container",
+        "published",
+        "error",
+      ],
+      default: "uploaded-to-cloud",
     },
 
     creation_id: {
-        type: String
+      type: String,
     },
 
     published_id: {
-        type: String
+      type: String,
     },
 
     uploadDate: {
-        type: String
+      type: String,
     },
 
     scheduledDate: {
-        matchMediaonth: {
-            type: String
-        },
-        day: {
-            type: String
-        },
-        time: {
-            type: String
-        }
-    }
-}, {
-    timestamps: true
-})
+      matchMediaonth: {
+        type: String,
+      },
+      day: {
+        type: String,
+      },
+      time: {
+        type: String,
+      },
+    },
+  },
+  {
+    timestamps: true,
+  }
+);
 
-const Post = mongoose.model('Post', postSchema);
+const Post = mongoose.model("Post", postSchema);
 
 module.exports = Post;

@@ -12,7 +12,7 @@ const { deletePost } = require("../controllers/postControllers/deletePost");
 const { getPostById } = require("../controllers/postControllers/getPostById");
 const {
   collectPosts,
-} = require("../controllers/CollectionIGPageControllers/collectposts");
+} = require("../controllers/CollectionIGPageControllers/collectPosts");
 
 const router = express.Router();
 

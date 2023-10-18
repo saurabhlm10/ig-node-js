@@ -80,10 +80,10 @@ exports.collectPosts = async (req, res) => {
 
     return res.status(200).send(redisEntry);
   } catch (error) {
-    if (error instanceof AxiosError) {
-      console.log(error.response.data);
-      return res.status(500).send(error.response.data);
-    }
+    // if (error instanceof AxiosError) {
+    //   console.log(error.response.data);
+    //   return res.status(500).send(error.response.data);
+    // }
     console.log(error.message);
     res.status(500).send(error.message);
   }

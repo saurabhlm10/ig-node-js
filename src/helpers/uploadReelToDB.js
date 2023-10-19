@@ -10,11 +10,14 @@ async function uploadReelToDB(reel, page) {
     // Upload video to cloudinary
     const media_url = await uploadToCloud(reel.videoUrl);
 
+    const mediaType = "reel";
+
     // Add Post to Mongo
     const post = {
       source_reel_url: reel.url,
       video_url: reel.videoUrl,
       media_url: media_url,
+      mediaType: mediaType,
       page: page,
       publishMonth: currentMonthName,
       caption: reel.caption,

@@ -18,6 +18,10 @@ const tempPostSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    mediaType: {
+      type: String,
+      required: true,
+    },
     status: {
       type: String,
       enum: ["not-processed", "processed"],

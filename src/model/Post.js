@@ -14,7 +14,7 @@ const postSchema = new mongoose.Schema(
       required: true,
     },
 
-    pageName: {
+    page: {
       type: String,
       required: true,
     },
@@ -32,9 +32,10 @@ const postSchema = new mongoose.Schema(
 
     media_url: {
       type: String,
+      required: true,
     },
 
-    mediatype: {
+    mediaType: {
       type: String,
     },
 

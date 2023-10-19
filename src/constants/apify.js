@@ -1,3 +1,3 @@
-const apifyPerUsernameResultLimit = 1;
+const apifyPerUsernameResultLimit = 30;
 
 module.exports = { apifyPerUsernameResultLimit };

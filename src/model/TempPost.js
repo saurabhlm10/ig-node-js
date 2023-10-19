@@ -18,6 +18,11 @@ const tempPostSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    status: {
+      type: String,
+      enum: ["not-processed", "processed"],
+      default: "not-processed",
+    },
     page: {
       type: String,
       required: true,

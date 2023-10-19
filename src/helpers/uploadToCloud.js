@@ -13,11 +13,6 @@ exports.uploadToCloud = async (video_url) => {
       { resource_type: "video" }
     );
 
-    console.log(
-      "cloudinaryUploadResponse.secure_url",
-      cloudinaryUploadResponse.secure_url
-    );
-
     return cloudinaryUploadResponse.secure_url;
   } catch (error) {
     throw new Error(error.message);

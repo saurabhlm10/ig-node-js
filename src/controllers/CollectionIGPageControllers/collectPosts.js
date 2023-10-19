@@ -1,52 +1,38 @@
 const { fetchRedis } = require("../../helpers/fetchRedis");
-const CollectionIGPage = require("../../model/CollectionIGPage");
 const { months } = require("../../constants/months");
 const { getReelsFromApify } = require("../../helpers/getReelsFromApify");
 const { postsPerMonth } = require("../../constants/postsPerDay");
-const { AxiosError } = require("axios");
-const TempPost = require("../../model/TempPost");
 const { getFilteredReels } = require("../../helpers/getFilteredReels");
-const { uploadToCloud } = require("../../helpers/uploadToCloud");
 const { uploadReelToDB } = require("../../helpers/uploadReelToDB");
-
-const get10Pages = async () => {
-  try {
-    // Get 10 DB entries sorted in descending order
-    const collectionPages = await CollectionIGPage.aggregate([
-      {
-        $sort: { followersCount: -1 }, // Sort by followersCount in descending order
-      },
-      {
-        $limit: 10, // Limit to 10 results
-      },
-    ]);
-
-    return collectionPages;
-  } catch (error) {}
-};
+const { get10Pages } = require("../../helpers/get10Pages");
+const { limit } = require("../../constants/dbquery");
 
 exports.collectPosts = async (req, res) => {
   try {
     const page = "frenchiesforthewin";
+    const mediaType = "reels";
 
     // Object for maintaining state in Redis
     let redisEntry = {
-      offset: 0,
+      postOffset: 0,
+      pageOffset: 0,
     };
 
     console.log("Getting Month-Year");
+
     // Get current Month Name
     const currentDate = new Date();
-
-    const currentMonth = currentDate.getMonth();
     const currentMonthYearName = `${
       months[currentDate.getMonth()]
     }-${currentDate.getFullYear()}`;
 
-    const redisKey = page + "-" + currentMonthYearName;
+    const redisKey = page + "-" + currentMonthYearName + "-" + mediaType;
 
+    console.log("Checking If Current State In Redis");
     // Get Current State from Redis
-    const rawResponse = await fetchRedis("get", currentMonthYearName + "hello");
+    const rawResponse = await fetchRedis("get", redisKey);
+
+    console.log("rawResponse", rawResponse);
 
     if (!rawResponse) {
       // Create entry in Redis
@@ -54,12 +40,13 @@ exports.collectPosts = async (req, res) => {
       await fetchRedis("set", redisKey, JSON.stringify(redisEntry));
     } else {
       console.log("Got Entry From Redis");
-      redisEntry.offset = rawResponse.offset;
+      redisEntry.postOffset = rawResponse.postOffset;
+      redisEntry.pageOffset = rawResponse.pageOffset;
     }
 
-    while (redisEntry.offset < postsPerMonth) {
+    while (redisEntry.postOffset < postsPerMonth) {
       // Get 10 DB entries sorted in descending order
-      const collectionPages = await get10Pages();
+      const collectionPages = await get10Pages(redisEntry.pageOffset);
 
       const usernames = collectionPages.map((page) => {
         return page.username;
@@ -73,7 +60,8 @@ exports.collectPosts = async (req, res) => {
 
       filteredReels.forEach(async (reel) => await uploadReelToDB(reel, page));
 
-      redisEntry.offset = redisEntry.offset + filteredReels.length;
+      redisEntry.postOffset = redisEntry.postOffset + filteredReels.length;
+      redisEntry.pageOffset = redisEntry.pageOffset + limit;
 
       await fetchRedis("set", redisKey, JSON.stringify(redisEntry));
     }

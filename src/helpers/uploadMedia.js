@@ -6,13 +6,23 @@ function urlEncodeString(string) {
   return encodeURIComponent(string);
 }
 
+function removeHashtags(text) {
+  return text.replace(/#[^\s#]+/g, '').trim();
+}
+
 exports.uploadMedia = async (media_url, caption, res) => {
   console.log("uploadMedia");
 
   const access_token = process.env.ACCESS_TOKEN;
   const ig_user_id = process.env.IG_USER_ID;
 
-  const uriEncodedCaption = urlEncodeString(caption);
+  const copyrightDisclaimer = `
+  To request a takedown of any post, please send an email to copyright.frenchiesforthewin@gmail.com with the post url
+  `;
+
+  const tempCaption = removeHashtags(caption) 
+
+  const uriEncodedCaption = urlEncodeString(tempCaption + copyrightDisclaimer);
 
   const coverUrl = "";
   const thumbOffset = "";

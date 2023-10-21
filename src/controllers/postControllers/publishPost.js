@@ -1,16 +1,21 @@
 const { publishMedia } = require("../../helpers/publishMedia");
 const { AxiosError } = require("axios");
 const Post = require("../../model/Post");
+const { months } = require("../../constants/months");
 
 exports.publishPost = async (req, res) => {
   try {
     console.log("1");
 
-    const currentPost = await Post.findOne({
-      status: 'uploaded-media-container'
-    })
+    const currentDate = new Date();
+    const currentMonth = months[currentDate.getMonth()];
 
-    console.log(currentPost)
+    const currentPost = await Post.findOne({
+      status: "uploaded-media-container",
+      publishMonth: currentMonth,
+    });
+
+    console.log(currentPost);
 
     console.log("2");
 
@@ -20,20 +25,17 @@ exports.publishPost = async (req, res) => {
 
     const creation_id = currentPost.creation_id;
 
-    console.log('creation_id', creation_id);
+    console.log("creation_id", creation_id);
 
     // Publish Media, save published_id, update published status to Y in CSV
-    const published_id = (await publishMedia(
-      creation_id,
-      currentPost._id
-    ));
+    const published_id = await publishMedia(creation_id, currentPost._id);
 
     console.log("4");
 
     currentPost.status = "published";
     currentPost.published_id = published_id;
 
-    await currentPost.save()
+    await currentPost.save();
 
     console.log("5");
 

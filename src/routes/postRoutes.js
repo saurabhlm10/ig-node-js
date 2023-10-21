@@ -13,15 +13,17 @@ const { getPostById } = require("../controllers/postControllers/getPostById");
 const {
   collectPosts,
 } = require("../controllers/CollectionIGPageControllers/collectPosts");
+const { createPosts } = require("../controllers/postControllers/createPosts");
 
 const router = express.Router();
 
-router.get("/publishPost/:t", publishPost);
-router.get("/uploadMediaContainer/:t", uploadMediaContainer);
-router.get("/uploadToCloud/:t", videoValidator, uploadToCloud);
+router.get("/publishPost", publishPost);
+router.get("/uploadMediaContainer", uploadMediaContainer);
+router.get("/uploadToCloud", videoValidator, uploadToCloud);
 router.post("/createPost", createPost);
 router.post("/deletePost", deletePost);
 router.get("/getPostById/:id", getPostById);
 router.get("/collectPosts", collectPosts);
+router.get("/createPosts", createPosts);
 
 module.exports = router;

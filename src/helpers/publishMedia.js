@@ -23,7 +23,7 @@ exports.publishMedia = async (
 
     // When uploaded successfully, publish the video
     if (isUploaded) {
-      const publishVideoUri = `https://graph.facebook.com/v1.0/${ig_user_id}/media_publish?creation_id=${creation_id}&access_token=${access_token}`;
+      const publishVideoUri = `https://graph.facebook.com/v17.0/${ig_user_id}/media_publish?creation_id=${creation_id}&access_token=${access_token}`;
       const publishResponse = await axios.post(publishVideoUri);
 
       return publishResponse.data.id;

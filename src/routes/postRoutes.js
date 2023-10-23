@@ -14,6 +14,7 @@ const {
   collectPosts,
 } = require("../controllers/CollectionIGPageControllers/collectPosts");
 const { createPosts } = require("../controllers/postControllers/createPosts");
+const { deleteTempPosts } = require("../controllers/CollectionIGPageControllers/deleteTempPosts");
 
 const router = express.Router();
 
@@ -25,5 +26,6 @@ router.post("/deletePost", deletePost);
 router.get("/getPostById/:id", getPostById);
 router.get("/collectPosts", collectPosts);
 router.get("/createPosts", createPosts);
+router.get("/deleteTempPosts", deleteTempPosts);
 
 module.exports = router;

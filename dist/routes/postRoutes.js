@@ -1,0 +1,27 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = __importDefault(require("express"));
+const publishPost_1 = require("../controllers/postControllers/publishPost");
+const uploadMediaContainer_1 = require("../controllers/postControllers/uploadMediaContainer");
+const video_validator_1 = require("../middleware/post/upload/video-validator");
+const uploadToCloud_1 = require("../controllers/postControllers/uploadToCloud");
+const createPost_1 = require("../controllers/postControllers/createPost");
+const deletePost_1 = require("../controllers/postControllers/deletePost");
+const getPostById_1 = require("../controllers/postControllers/getPostById");
+const collectPosts_1 = require("../controllers/CollectionIGPageControllers/collectPosts");
+const createPosts_1 = require("../controllers/postControllers/createPosts");
+const deleteTempPosts_1 = require("../controllers/CollectionIGPageControllers/deleteTempPosts");
+const router = express_1.default.Router();
+router.get("/publishPost", publishPost_1.publishPost);
+router.get("/uploadMediaContainer", uploadMediaContainer_1.uploadMediaContainer);
+router.get("/uploadToCloud", video_validator_1.videoValidator, uploadToCloud_1.uploadToCloud);
+router.post("/createPost", createPost_1.createPost);
+router.post("/deletePost", deletePost_1.deletePost);
+router.get("/getPostById/:id", getPostById_1.getPostById);
+router.get("/collectPosts", collectPosts_1.collectPosts);
+router.get("/createPosts", createPosts_1.createPosts);
+router.get("/deleteTempPosts", deleteTempPosts_1.deleteTempPosts);
+exports.default = router;

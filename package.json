@@ -2,10 +2,11 @@
   "name": "ig-node-js",
   "version": "1.0.0",
   "description": "",
-  "main": "src/server.js",
+  "main": "dist/server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node src/server",
+    "build": "tsc",
+    "start": "node dist/server",
     "dev": "nodemon src/server",
     "dev-server": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node ./dist/server.js\""
   },

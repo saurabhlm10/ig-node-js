@@ -6,6 +6,12 @@ export const getStatus = async (req: Request, res: Response) => {
   try {
     const { page, mediaType } = req.query;
 
+    if (!page || !mediaType) {
+      return res.status(400).json({
+        message: 'page and mediaType is required',
+      });
+    }
+
     const currentMonthYearName = getCurrentMonthYearName();
 
     const redisKey = page + '-' + currentMonthYearName + '-' + mediaType;

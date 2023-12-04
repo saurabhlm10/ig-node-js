@@ -30,17 +30,17 @@ function setStatus(currentPostId, statusMessage) {
             throw new Error('Post does not exist');
         }
         switch (statusMessage) {
-            case "PUBLISHED":
-                post.status = "published";
+            case 'PUBLISHED':
+                post.status = 'published';
                 break;
-            case "EXPIRED":
-                post.status = "uploaded-to-cloud";
+            case 'EXPIRED':
+                post.status = 'uploaded-to-cloud';
                 break;
-            case "ERROR":
-                post.status = "error";
+            case 'ERROR':
+                post.status = 'error';
                 break;
             default:
-                throw new Error("Invalid status message");
+                throw new Error('Invalid status message');
         }
         yield post.save();
     });
@@ -59,21 +59,21 @@ const isUploadSuccessful = (retryCount, checkStatusUri, currentPostId) => __awai
             return false;
         const response = yield axios_1.default.get(checkStatusUri);
         console.log(response.data);
-        if (response.data.status_code === "PUBLISHED" ||
-            response.data.status_code === "EXPIRED") {
+        if (response.data.status_code === 'PUBLISHED' ||
+            response.data.status_code === 'EXPIRED') {
             // Update the published status of the post and save to DB
             yield setStatus(currentPostId, response.data.status_code);
             return true;
         }
-        if (response.data.status_code === "ERROR") {
+        if (response.data.status_code === 'ERROR') {
             yield setStatus(currentPostId, response.data.status_code);
-            throw new Error("Error" + response.data.status);
+            throw new Error('Error' + response.data.status);
         }
-        if (response.data.status_code !== "FINISHED") {
+        if (response.data.status_code !== 'FINISHED') {
             yield _wait(3000);
             return (0, exports.isUploadSuccessful)(retryCount + 1, checkStatusUri, currentPostId);
         }
-        return false;
+        return true;
     }
     catch (e) {
         throw e;

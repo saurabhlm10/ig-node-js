@@ -20,19 +20,24 @@ function urlEncodeString(string) {
     return encodeURIComponent(string);
 }
 function removeHashtags(text) {
-    return text.replace(/#[^\s#]+/g, "").trim();
+    return text.replace(/#[^\s#]+/g, '').trim();
 }
 const uploadMedia = (media_url, caption) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    console.log("uploadMedia");
-    const access_token = process.env.ACCESS_TOKEN;
-    const ig_user_id = process.env.IG_USER_ID;
-    const copyrightDisclaimer = `
+    var _a, _b;
+    console.log('uploadMedia');
+    try {
+        console.log('beginn');
+        const access_token = process.env.ACCESS_TOKEN;
+        const ig_user_id = process.env.IG_USER_ID;
+        console.log('access_token', access_token);
+        console.log('ig_user_id', ig_user_id);
+        const copyrightDisclaimer = `
 
   To request a takedown of any post, please send an email to copyright.frenchiesforthewin@gmail.com with the post url
   `;
-    const tempCaption = removeHashtags(caption);
-    const captionHastags = `
+        console.log('1');
+        const tempCaption = removeHashtags(caption);
+        const captionHastags = `
   
   
   Rate This 1-10 🥰
@@ -51,20 +56,22 @@ const uploadMedia = (media_url, caption) => __awaiter(void 0, void 0, void 0, fu
   #frenchiesforthewin #frenchievids #frenchievideo #frenchie #frenchbulldog #frenchiedaily #frenchiesofinsta #frenchiefriends #frenchiesofinstagram #frenchielove #frenchieoftheday #frenchiegram #frenchielife #frenchiepuppy #frenchiesociety #frenchiephotos #frenchiebulldog #dogslife
 
   `;
-    const uriEncodedCaption = urlEncodeString(tempCaption + copyrightDisclaimer + captionHastags);
-    const coverUrl = "";
-    const thumbOffset = "";
-    const locationId = "";
-    const uploadParamsString = `caption=${uriEncodedCaption}&cover_url=${coverUrl}&thumb_offset=${thumbOffset}&location_id=${locationId}&access_token=${access_token}`;
-    const uploadVideoUri = `https://graph.facebook.com/v17.0/${ig_user_id}/media?media_type=REELS&video_url=${media_url}&${uploadParamsString}`;
-    try {
+        const uriEncodedCaption = urlEncodeString(tempCaption + copyrightDisclaimer + captionHastags);
+        console.log('2');
+        const coverUrl = '';
+        const thumbOffset = '';
+        const locationId = '';
+        const uploadParamsString = `caption=${uriEncodedCaption}&cover_url=${coverUrl}&thumb_offset=${thumbOffset}&location_id=${locationId}&access_token=${access_token}`;
+        const uploadVideoUri = `https://graph.facebook.com/v17.0/${ig_user_id}/media?media_type=REELS&video_url=${media_url}&${uploadParamsString}`;
         const uploadResponse = yield axios_1.default.post(uploadVideoUri);
+        console.log('3');
         return uploadResponse.data.id;
     }
     catch (error) {
+        // console.log(error);
         if (error instanceof axios_2.AxiosError) {
-            // console.log(JSON.stringify(error.response?.data));
-            throw new Error((_a = error.response) === null || _a === void 0 ? void 0 : _a.data);
+            console.log(JSON.stringify((_a = error.response) === null || _a === void 0 ? void 0 : _a.data));
+            throw new Error((_b = error.response) === null || _b === void 0 ? void 0 : _b.data);
         }
         if (error instanceof Error) {
             throw new Error(error.message);

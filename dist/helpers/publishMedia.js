@@ -18,17 +18,19 @@ const axios_2 = require("axios");
 const isUploadSuccessful_1 = require("../utils/isUploadSuccessful");
 const publishMedia = (creation_id, currentPostId) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
-    console.log("publishMedia");
+    console.log('publishMedia');
     const access_token = process.env.ACCESS_TOKEN;
     const ig_user_id = process.env.IG_USER_ID;
     try {
         const checkStatusUri = `https://graph.facebook.com/v17.0/${creation_id}?fields=status,status_code&access_token=${access_token}`;
         const isUploaded = yield (0, isUploadSuccessful_1.isUploadSuccessful)(0, checkStatusUri, currentPostId);
-        console.log("1");
+        console.log('isUploaded', isUploaded);
+        console.log('1');
         // When uploaded successfully, publish the video
         if (isUploaded) {
             const publishVideoUri = `https://graph.facebook.com/v17.0/${ig_user_id}/media_publish?creation_id=${creation_id}&access_token=${access_token}`;
             const publishResponse = yield axios_1.default.post(publishVideoUri);
+            console.log('publishedid', publishResponse.data.id);
             return publishResponse.data.id;
         }
     }

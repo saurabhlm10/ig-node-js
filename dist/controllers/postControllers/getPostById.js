@@ -13,18 +13,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getPostById = void 0;
-const Post_js_1 = __importDefault(require("../../model/Post.js"));
+const Post_1 = __importDefault(require("../../model/Post"));
 const getPostById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const post = yield Post_js_1.default.findById(req.params.id);
+        const post = yield Post_1.default.findById(req.params.id);
         if (!post) {
-            return res.status(404).json({ message: "Post not found" });
+            return res.status(404).json({ message: 'Post not found' });
         }
         res.status(200).json(post);
     }
     catch (error) {
         console.error(error);
-        res.status(500).json({ message: "Internal server error" });
+        res.status(500).json({ message: 'Internal server error' });
     }
 });
 exports.getPostById = getPostById;

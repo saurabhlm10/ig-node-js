@@ -1,5 +1,5 @@
-import CollectionIGPage from "../model/CollectionIGPage.js";
-import { limit } from "../constants/dbquery.js";
+import CollectionIGPage from '../model/CollectionIGPage';
+import { limit } from '../constants/dbquery';
 
 const get10Pages = async (offset: number) => {
   try {
@@ -16,10 +16,7 @@ const get10Pages = async (offset: number) => {
     } else {
       console.log('An unexpected error occurred', error);
     }
-
   }
 };
 
 export { get10Pages };
-
-

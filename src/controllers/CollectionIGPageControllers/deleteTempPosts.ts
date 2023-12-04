@@ -1,20 +1,20 @@
-import { Request, Response } from "express";
-import TempPost from "../../model/TempPost.js";
+import { Request, Response } from 'express';
+import TempPost from '../../model/TempPost.js';
 
 export const deleteTempPosts = async (req: Request, res: Response) => {
   try {
-    const { page } = req.body;
+    const { page } = req.query;
 
     if (!page) {
-      return res.status(400).send("Page name is required");
+      return res.status(400).send('Page name is required');
     }
 
     await TempPost.deleteMany({
-      status: "processed",
+      status: 'processed',
       page,
     });
 
-    res.status(200).send("Deleted Temp Posts for " + page);
+    res.status(200).send('Deleted Temp Posts for ' + page);
   } catch (error) {
     if (error instanceof Error) {
       console.log(error.message);

@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
-const months_js_1 = require("../constants/months.js");
+const months_1 = require("../constants/months");
 const tempPostSchema = new mongoose_1.default.Schema({
     source_reel_url: {
         type: String,
@@ -27,8 +27,8 @@ const tempPostSchema = new mongoose_1.default.Schema({
     },
     status: {
         type: String,
-        enum: ["not-processed", "processed"],
-        default: "not-processed",
+        enum: ['not-processed', 'processed'],
+        default: 'not-processed',
     },
     page: {
         type: String,
@@ -37,7 +37,7 @@ const tempPostSchema = new mongoose_1.default.Schema({
     publishMonth: {
         type: String,
         required: true,
-        enum: months_js_1.months,
+        enum: months_1.months,
     },
     caption: {
         type: String,
@@ -46,5 +46,5 @@ const tempPostSchema = new mongoose_1.default.Schema({
 }, {
     timestamps: true,
 });
-const TempPost = mongoose_1.default.model("TempPost", tempPostSchema);
+const TempPost = mongoose_1.default.model('TempPost', tempPostSchema);
 exports.default = TempPost;

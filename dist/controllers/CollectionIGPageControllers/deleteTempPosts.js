@@ -16,15 +16,15 @@ exports.deleteTempPosts = void 0;
 const TempPost_js_1 = __importDefault(require("../../model/TempPost.js"));
 const deleteTempPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { page } = req.body;
+        const { page } = req.query;
         if (!page) {
-            return res.status(400).send("Page name is required");
+            return res.status(400).send('Page name is required');
         }
         yield TempPost_js_1.default.deleteMany({
-            status: "processed",
+            status: 'processed',
             page,
         });
-        res.status(200).send("Deleted Temp Posts for " + page);
+        res.status(200).send('Deleted Temp Posts for ' + page);
     }
     catch (error) {
         if (error instanceof Error) {

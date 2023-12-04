@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import { months } from "../constants/months.js";
+import mongoose from 'mongoose';
+import { months } from '../constants/months';
 
 const monthStatusSchema = new mongoose.Schema(
   {
@@ -12,13 +12,13 @@ const monthStatusSchema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
-      enum: ["not-updated", "success", "fail"],
-      default: "not-updated",
+      enum: ['not-updated', 'success', 'fail'],
+      default: 'not-updated',
     },
     statusMessage: {
       type: String,
       required: true,
-      default: "Not Updated Yet",
+      default: 'Not Updated Yet',
     },
   },
   {
@@ -26,6 +26,6 @@ const monthStatusSchema = new mongoose.Schema(
   }
 );
 
-const MonthStatus = mongoose.model("MonthStatus", monthStatusSchema);
+const MonthStatus = mongoose.model('MonthStatus', monthStatusSchema);
 
 export default MonthStatus;

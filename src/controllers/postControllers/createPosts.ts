@@ -1,14 +1,14 @@
-import { Request, Response } from "express";
-import { months } from "../../constants/months.js";
-import Post from "../../model/Post.js";
-import TempPost from "../../model/TempPost.js";
+import { Request, Response } from 'express';
+import { months } from '../../constants/months';
+import Post from '../../model/Post';
+import TempPost from '../../model/TempPost';
 
 export const createPosts = async (req: Request, res: Response) => {
   try {
-    const page = "frenchiesforthewin";
+    const page = 'frenchiesforthewin';
 
     if (!page) {
-      return res.status(400).send("Page name is required");
+      return res.status(400).send('Page name is required');
     }
 
     // Get Current Month
@@ -17,13 +17,13 @@ export const createPosts = async (req: Request, res: Response) => {
 
     // Get all TempPosts for one page for current month with status "not-processed"
     const tempPosts = await TempPost.find({
-      status: "not-processed",
+      status: 'not-processed',
       publishMonth: currentMonth,
       page: page,
     });
 
     if (tempPosts.length === 0) {
-      return res.status(400).send("No posts to process");
+      return res.status(400).send('No posts to process');
     }
 
     // Prepare array for insertMany
@@ -31,7 +31,7 @@ export const createPosts = async (req: Request, res: Response) => {
       source_reel_url: tempPost.source_reel_url,
       video_url: tempPost.video_url,
       media_url: tempPost.media_url,
-      status: "uploaded-to-cloud",
+      status: 'uploaded-to-cloud',
       page: tempPost.page,
       publishMonth: tempPost.publishMonth,
       caption: tempPost.caption,
@@ -44,7 +44,7 @@ export const createPosts = async (req: Request, res: Response) => {
 
       // Update all tempPosts status to "processed"
       for (let tempPost of tempPosts) {
-        tempPost.status = "processed";
+        tempPost.status = 'processed';
         await tempPost.save();
       }
     } catch (error) {
@@ -55,7 +55,7 @@ export const createPosts = async (req: Request, res: Response) => {
       }
     }
 
-    return res.status(200).send("All posts processed");
+    return res.status(200).send('All posts processed');
   } catch (error) {
     if (error instanceof Error) {
       return res.status(400).json(error.message);

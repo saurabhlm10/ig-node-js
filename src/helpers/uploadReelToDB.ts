@@ -1,6 +1,6 @@
-import { months } from "../constants/months.js";
-import TempPost from "../model/TempPost.js";
-import { uploadToCloud } from "./uploadToCloud.js";
+import { months } from '../constants/months';
+import TempPost from '../model/TempPost';
+import { uploadToCloud } from './uploadToCloud';
 
 async function uploadReelToDB(reel: InstagramPost, page: string) {
   const currentDate = new Date();
@@ -10,7 +10,7 @@ async function uploadReelToDB(reel: InstagramPost, page: string) {
     // Upload video to cloudinary
     const media_url = await uploadToCloud(reel.videoUrl);
 
-    const mediaType = "reel";
+    const mediaType = 'reel';
 
     // Add Post to Mongo
     const post = {

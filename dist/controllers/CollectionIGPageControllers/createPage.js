@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createPage = void 0;
-const CollectionIGPage_js_1 = __importDefault(require("../../model/CollectionIGPage.js"));
+const CollectionIGPage_1 = __importDefault(require("../../model/CollectionIGPage"));
 const mongodb_1 = require("mongodb");
 const createPage = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { username, followersCount } = req.body;
@@ -21,11 +21,11 @@ const createPage = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     if (!username || typeof followersCount !== 'number') {
         return res
             .status(400)
-            .send({ error: "Both username and followersCount are required." });
+            .send({ error: 'Both username and followersCount are required.' });
     }
     try {
         // Create a new page
-        const page = new CollectionIGPage_js_1.default({
+        const page = new CollectionIGPage_1.default({
             username: username,
             followersCount: followersCount,
         });
@@ -36,15 +36,15 @@ const createPage = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (error instanceof mongodb_1.MongoError) {
             // Handle duplication error
             if (error.code === 11000) {
-                return res.status(400).send({ error: "Username already exists." });
+                return res.status(400).send({ error: 'Username already exists.' });
             }
         }
         else if (error instanceof Error) {
             console.log(error.message);
-            return res.status(500).send({ error: "Internal Server Error." });
+            return res.status(500).send({ error: 'Internal Server Error.' });
         }
         else {
-            return res.status(500).send({ error: "An unknown error occurred." });
+            return res.status(500).send({ error: 'An unknown error occurred.' });
         }
     }
 });

@@ -1,1 +1,1 @@
-export const apifyPerUsernameResultLimit = 30;
+export const apifyPerUsernameResultLimit = 5;

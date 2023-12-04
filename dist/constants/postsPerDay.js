@@ -18,4 +18,5 @@ function getDaysInCurrentMonth() {
 }
 const postsPerDay = 6;
 const daysInCurrentMonth = getDaysInCurrentMonth();
-exports.postsPerMonth = postsPerDay * daysInCurrentMonth;
+exports.postsPerMonth = 2;
+// export const postsPerMonth = postsPerDay * daysInCurrentMonth;

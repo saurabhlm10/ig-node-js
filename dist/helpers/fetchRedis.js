@@ -17,19 +17,16 @@ const axios_1 = __importDefault(require("axios"));
 const upstashRedRESTUrl = process.env.UPSTASH_REDIS_REST_URL;
 const authToken = process.env.UPSTASH_REDIS_REST_TOKEN;
 const fetchRedis = (command, ...args) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log("Executing Redis Command:", command);
-    const commandUrl = `${upstashRedRESTUrl}/${command}/${args.join("/")}`;
+    const commandUrl = `${upstashRedRESTUrl}/${command}/${args.join('/')}`;
     const response = yield axios_1.default.get(commandUrl, {
         headers: {
             Authorization: `Bearer ${authToken}`,
         },
     });
-    if (response.statusText !== "OK") {
+    if (response.statusText !== 'OK') {
         throw new Error(`Error executing Redis command: ${response.statusText}`);
     }
-    console.log("Redis Command Executed:", command);
-    if (command === "get") {
-        console.log("GET Command Executed");
+    if (command === 'get') {
         if (response.data.result) {
             const jsonString = response.data.result.replace(/(\w+):/g, '"$1":');
             const data = JSON.parse(jsonString);
@@ -39,7 +36,7 @@ const fetchRedis = (command, ...args) => __awaiter(void 0, void 0, void 0, funct
             return null;
         }
     }
-    if (command === "set" || command === "zadd")
+    if (command === 'set' || command === 'zadd')
         return;
 });
 exports.fetchRedis = fetchRedis;

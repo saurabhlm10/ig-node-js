@@ -4,7 +4,7 @@ import { updateAllPages } from '../controllers/CollectionIGPageControllers/updat
 
 const router = express.Router();
 
-router.post('/createPage', createPage);
+router.post('/', createPage);
 router.get('/updateAllPages', updateAllPages);
 
 export default router;

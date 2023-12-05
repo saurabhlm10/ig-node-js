@@ -7,6 +7,6 @@ const express_1 = __importDefault(require("express"));
 const createPage_1 = require("../controllers/CollectionIGPageControllers/createPage");
 const updateAllPages_1 = require("../controllers/CollectionIGPageControllers/updateAllPages");
 const router = express_1.default.Router();
-router.post('/createPage', createPage_1.createPage);
+router.post('/', createPage_1.createPage);
 router.get('/updateAllPages', updateAllPages_1.updateAllPages);
 exports.default = router;

@@ -16,13 +16,18 @@ const CollectionIGPageSchema = new mongoose_1.default.Schema({
     },
     link: {
         type: String,
+        required: true,
+    },
+    page: {
+        type: String,
+        required: true,
     },
 }, {
     timestamps: true,
 });
-CollectionIGPageSchema.pre("save", function (next) {
-    this.link = "https://www.instagram.com/" + this.username;
+CollectionIGPageSchema.pre('save', function (next) {
+    this.link = 'https://www.instagram.com/' + this.username;
     next();
 });
-const CollectionIGPage = mongoose_1.default.model("CollectionIGPage", CollectionIGPageSchema);
+const CollectionIGPage = mongoose_1.default.model('CollectionIGPage', CollectionIGPageSchema);
 exports.default = CollectionIGPage;

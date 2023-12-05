@@ -1,4 +1,4 @@
-function getDaysInCurrentMonth() {
+export function getDaysInCurrentMonth() {
   // Get the current date
   const now = new Date();
 
@@ -21,8 +21,3 @@ function getDaysInCurrentMonth() {
 
   return numberOfDays;
 }
-
-const postsPerDay = 6;
-const daysInCurrentMonth = getDaysInCurrentMonth();
-export const postsPerMonth = 2;
-// export const postsPerMonth = postsPerDay * daysInCurrentMonth;

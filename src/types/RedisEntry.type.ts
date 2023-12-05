@@ -10,3 +10,8 @@ export interface RedisEntry {
   status: StatusValues;
   statusMessage: string;
 }
+
+export interface RedisUpdatePagesEntry {
+  status: StatusValues;
+  statusMessage: string;
+}

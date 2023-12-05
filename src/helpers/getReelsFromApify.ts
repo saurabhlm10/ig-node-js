@@ -1,5 +1,5 @@
-import { ApifyClient } from "apify-client";
-import { apifyPerUsernameResultLimit } from "../constants/apify.js";
+import { ApifyClient } from 'apify-client';
+import { apifyPerUsernameResultLimit } from '../constants';
 
 // Initialize the ApifyClient with API token
 const client = new ApifyClient({
@@ -14,10 +14,10 @@ export const getReelsFromApify = async (usernames: string[]) => {
   };
 
   // Run the Actor and wait for it to finish
-  const run = await client.actor("xMc5Ga1oCONPmWJIa").call(input);
+  const run = await client.actor('xMc5Ga1oCONPmWJIa').call(input);
 
   // Fetch and print Actor results from the run's dataset (if any)
-  console.log("Results from dataset");
+  console.log('Results from dataset');
   const { items } = await client.dataset(run.defaultDatasetId).listItems();
 
   return items;

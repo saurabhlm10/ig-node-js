@@ -12,16 +12,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.collectPosts = void 0;
 const fetchRedis_1 = require("../../helpers/fetchRedis");
 const getReelsFromApify_1 = require("../../helpers/getReelsFromApify");
-const postsPerDay_1 = require("../../constants/postsPerDay");
 const getFilteredReels_1 = require("../../helpers/getFilteredReels");
 const uploadReelToDB_1 = require("../../helpers/uploadReelToDB");
 const get10Pages_1 = require("../../helpers/get10Pages");
-const dbquery_1 = require("../../constants/dbquery");
 const getCurrentMonthYearName_1 = require("../../helpers/getCurrentMonthYearName");
 const RedisEntry_type_1 = require("../../types/RedisEntry.type");
+const constants_1 = require("../../constants");
 const collectPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const page = 'frenchiesforthewin';
-    const mediaType = 'reels';
+    const { page, mediaType } = req.params;
     console.log('Getting Month-Year');
     // Get current Month Name
     const currentMonthYearName = (0, getCurrentMonthYearName_1.getCurrentMonthYearName)();
@@ -31,7 +29,7 @@ const collectPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         postOffset: 0,
         pageOffset: 0,
         status: RedisEntry_type_1.StatusValues.IN_PROGRESS,
-        statusMessage: `Collecting posts for` + redisKey,
+        statusMessage: `Collecting posts for ` + redisKey,
     };
     console.log('Checking If Current State In Redis');
     try {
@@ -50,7 +48,7 @@ const collectPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         }
         res.status(200).send(`Collecting posts for ${redisKey}`);
         console.log('PASSEDJNCJKSNCKNSCJN');
-        while (redisEntry.postOffset < postsPerDay_1.postsPerMonth) {
+        while (redisEntry.postOffset < constants_1.postsPerMonth) {
             // Get 10 DB entries sorted in descending order
             const collectionPages = yield (0, get10Pages_1.get10Pages)(redisEntry.pageOffset);
             console.log('collectionPages', collectionPages);
@@ -64,7 +62,7 @@ const collectPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* (
             const filteredReels = yield (0, getFilteredReels_1.getFilteredReels)(reels);
             filteredReels.forEach((reel) => __awaiter(void 0, void 0, void 0, function* () { return yield (0, uploadReelToDB_1.uploadReelToDB)(reel, page); }));
             redisEntry.postOffset = redisEntry.postOffset + filteredReels.length;
-            redisEntry.pageOffset = redisEntry.pageOffset + dbquery_1.limit;
+            redisEntry.pageOffset = redisEntry.pageOffset + constants_1.limit;
             redisEntry.status = RedisEntry_type_1.StatusValues.SUCCESS;
             redisEntry.statusMessage = 'Collected Posts Successfully for ' + redisKey;
             yield (0, fetchRedis_1.fetchRedis)('set', redisKey, JSON.stringify(redisEntry));

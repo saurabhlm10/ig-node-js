@@ -1,5 +1,5 @@
+import { limit } from '../constants';
 import CollectionIGPage from '../model/CollectionIGPage';
-import { limit } from '../constants/dbquery';
 
 const get10Pages = async (offset: number) => {
   try {

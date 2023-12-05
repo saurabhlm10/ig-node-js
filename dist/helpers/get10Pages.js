@@ -13,14 +13,14 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.get10Pages = void 0;
+const constants_1 = require("../constants");
 const CollectionIGPage_1 = __importDefault(require("../model/CollectionIGPage"));
-const dbquery_1 = require("../constants/dbquery");
 const get10Pages = (offset) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const collectionPages = yield CollectionIGPage_1.default.aggregate([
             { $sort: { followersCount: -1 } },
             { $skip: offset },
-            { $limit: dbquery_1.limit },
+            { $limit: constants_1.limit },
         ]);
         return collectionPages;
     }

@@ -11,7 +11,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getReelsFromApify = void 0;
 const apify_client_1 = require("apify-client");
-const apify_js_1 = require("../constants/apify.js");
+const constants_1 = require("../constants");
 // Initialize the ApifyClient with API token
 const client = new apify_client_1.ApifyClient({
     token: process.env.APIFY_KEY,
@@ -20,12 +20,12 @@ const getReelsFromApify = (usernames) => __awaiter(void 0, void 0, void 0, funct
     // Prepare Actor input
     const input = {
         username: usernames,
-        resultsLimit: apify_js_1.apifyPerUsernameResultLimit,
+        resultsLimit: constants_1.apifyPerUsernameResultLimit,
     };
     // Run the Actor and wait for it to finish
-    const run = yield client.actor("xMc5Ga1oCONPmWJIa").call(input);
+    const run = yield client.actor('xMc5Ga1oCONPmWJIa').call(input);
     // Fetch and print Actor results from the run's dataset (if any)
-    console.log("Results from dataset");
+    console.log('Results from dataset');
     const { items } = yield client.dataset(run.defaultDatasetId).listItems();
     return items;
 });

@@ -1,17 +1,15 @@
 import { fetchRedis } from '../../helpers/fetchRedis';
 import { getReelsFromApify } from '../../helpers/getReelsFromApify';
-import { postsPerMonth } from '../../constants/postsPerDay';
 import { getFilteredReels } from '../../helpers/getFilteredReels';
 import { uploadReelToDB } from '../../helpers/uploadReelToDB';
 import { get10Pages } from '../../helpers/get10Pages';
-import { limit } from '../../constants/dbquery';
 import { Request, Response } from 'express';
 import { getCurrentMonthYearName } from '../../helpers/getCurrentMonthYearName';
 import { RedisEntry, StatusValues } from '../../types/RedisEntry.type';
+import { limit, postsPerMonth } from '../../constants';
 
 export const collectPosts = async (req: Request, res: Response) => {
-  const page = 'frenchiesforthewin';
-  const mediaType = 'reels';
+  const { page, mediaType } = req.params;
 
   console.log('Getting Month-Year');
 
@@ -25,7 +23,7 @@ export const collectPosts = async (req: Request, res: Response) => {
     postOffset: 0,
     pageOffset: 0,
     status: StatusValues.IN_PROGRESS,
-    statusMessage: `Collecting posts for` + redisKey,
+    statusMessage: `Collecting posts for ` + redisKey,
   };
 
   console.log('Checking If Current State In Redis');

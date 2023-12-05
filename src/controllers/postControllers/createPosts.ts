@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import { months } from '../../constants/months';
 import Post from '../../model/Post';
 import TempPost from '../../model/TempPost';
+import { months } from '../../constants';
 
 export const createPosts = async (req: Request, res: Response) => {
   try {

@@ -13,9 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createPosts = void 0;
-const months_1 = require("../../constants/months");
 const Post_1 = __importDefault(require("../../model/Post"));
 const TempPost_1 = __importDefault(require("../../model/TempPost"));
+const constants_1 = require("../../constants");
 const createPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const page = 'frenchiesforthewin';
@@ -24,7 +24,7 @@ const createPosts = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         }
         // Get Current Month
         const currentDate = new Date();
-        const currentMonth = months_1.months[currentDate.getMonth()];
+        const currentMonth = constants_1.months[currentDate.getMonth()];
         // Get all TempPosts for one page for current month with status "not-processed"
         const tempPosts = yield TempPost_1.default.find({
             status: 'not-processed',

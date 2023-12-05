@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = __importDefault(require("mongoose"));
-const months_1 = require("../constants/months");
+const constants_1 = require("../constants");
 const tempPostSchema = new mongoose_1.default.Schema({
     source_reel_url: {
         type: String,
@@ -37,7 +37,7 @@ const tempPostSchema = new mongoose_1.default.Schema({
     publishMonth: {
         type: String,
         required: true,
-        enum: months_1.months,
+        enum: constants_1.months,
     },
     caption: {
         type: String,

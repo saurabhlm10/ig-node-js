@@ -1,4 +1,4 @@
-import { months } from '../constants/months';
+import { months } from '../constants';
 import TempPost from '../model/TempPost';
 import { uploadToCloud } from './uploadToCloud';
 

@@ -13,13 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.uploadReelToDB = void 0;
-const months_1 = require("../constants/months");
+const constants_1 = require("../constants");
 const TempPost_1 = __importDefault(require("../model/TempPost"));
 const uploadToCloud_1 = require("./uploadToCloud");
 function uploadReelToDB(reel, page) {
     return __awaiter(this, void 0, void 0, function* () {
         const currentDate = new Date();
-        const currentMonthName = months_1.months[currentDate.getMonth()];
+        const currentMonthName = constants_1.months[currentDate.getMonth()];
         try {
             // Upload video to cloudinary
             const media_url = yield (0, uploadToCloud_1.uploadToCloud)(reel.videoUrl);

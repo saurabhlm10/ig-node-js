@@ -16,33 +16,33 @@ exports.publishPost = void 0;
 const publishMedia_1 = require("../../helpers/publishMedia");
 const axios_1 = require("axios");
 const Post_1 = __importDefault(require("../../model/Post"));
-const months_1 = require("../../constants/months");
+const constants_1 = require("../../constants");
 const publishPost = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
-        console.log("1");
+        console.log('1');
         const currentDate = new Date();
-        const currentMonth = months_1.months[currentDate.getMonth()];
+        const currentMonth = constants_1.months[currentDate.getMonth()];
         const currentPost = yield Post_1.default.findOne({
-            status: "uploaded-media-container",
+            status: 'uploaded-media-container',
             publishMonth: currentMonth,
         });
         console.log(currentPost);
-        console.log("2");
+        console.log('2');
         if (!currentPost) {
-            return res.status(404).json({ message: "No Posts To Be Uploaded" });
+            return res.status(404).json({ message: 'No Posts To Be Uploaded' });
         }
         const creation_id = currentPost.creation_id;
-        console.log("creation_id", creation_id);
+        console.log('creation_id', creation_id);
         // Publish Media, save published_id, update published status to Y in CSV
         const published_id = yield (0, publishMedia_1.publishMedia)(creation_id, Number(currentPost._id));
-        console.log("4");
-        currentPost.status = "published";
+        console.log('4');
+        currentPost.status = 'published';
         currentPost.published_id = published_id;
         yield currentPost.save();
-        console.log("5");
+        console.log('5');
         return res.status(200).json({
-            message: "Post Published Successfully",
+            message: 'Post Published Successfully',
             published_id,
         });
     }

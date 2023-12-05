@@ -1,4 +1,4 @@
-import { months } from '../constants/months';
+import { months } from '../constants';
 
 export const getCurrentMonthYearName = (): string => {
   const currentDate = new Date();

@@ -16,14 +16,14 @@ exports.uploadMediaContainer = void 0;
 const uploadMedia_1 = require("../../helpers/uploadMedia");
 const axios_1 = require("axios");
 const Post_1 = __importDefault(require("../../model/Post"));
-const months_1 = require("../../constants/months");
+const constants_1 = require("../../constants");
 const uploadMediaContainer = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
     try {
         console.log('uploadMediaContainer');
         // Get Current Month
         const currentDate = new Date();
-        const currentMonth = months_1.months[currentDate.getMonth()];
+        const currentMonth = constants_1.months[currentDate.getMonth()];
         // Find one post to upload from current month
         const currentPost = yield Post_1.default.findOne({
             status: 'uploaded-to-cloud',

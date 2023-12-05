@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { uploadMedia } from '../../helpers/uploadMedia';
 import { AxiosError } from 'axios';
 import Post from '../../model/Post';
-import { months } from '../../constants/months';
+import { months } from '../../constants';
 
 export const uploadMediaContainer = async (req: Request, res: Response) => {
   try {

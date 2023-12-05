@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { months } from '../constants/months';
+import { months } from '../constants';
 
 const tempPostSchema = new mongoose.Schema(
   {

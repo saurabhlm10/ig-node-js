@@ -10,7 +10,11 @@ function removeHashtags(text: string) {
   return text.replace(/#[^\s#]+/g, '').trim();
 }
 
-export const uploadMedia = async (media_url: string, caption: string) => {
+export const uploadMedia = async (
+  media_url: string,
+  caption: string,
+  cover_url: string
+) => {
   console.log('uploadMedia');
 
   try {
@@ -56,7 +60,7 @@ export const uploadMedia = async (media_url: string, caption: string) => {
 
     console.log('2');
 
-    const coverUrl = '';
+    const coverUrl = cover_url || '';
     const thumbOffset = '';
     const locationId = '';
     const uploadParamsString = `caption=${uriEncodedCaption}&cover_url=${coverUrl}&thumb_offset=${thumbOffset}&location_id=${locationId}&access_token=${access_token}`;

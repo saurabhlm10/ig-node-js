@@ -18,6 +18,11 @@ export const getStatus = async (req: Request, res: Response) => {
 
     const rawResponse = await fetchRedis('get', redisKey);
 
+    if (!rawResponse)
+      return res.status(400).json({
+        message: 'No such key in DB',
+      });
+
     console.log(rawResponse);
 
     return res.status(200).json({

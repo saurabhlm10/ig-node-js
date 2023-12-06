@@ -13,6 +13,10 @@ const tempPostSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
+    cover_url: {
+      type: String,
+      required: true,
+    },
     media_url: {
       type: String,
       required: true,

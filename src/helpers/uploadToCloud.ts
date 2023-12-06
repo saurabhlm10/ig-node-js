@@ -1,4 +1,4 @@
-import { v2 as cloudinary } from "cloudinary";
+import { v2 as cloudinary } from 'cloudinary';
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -10,7 +10,7 @@ export const uploadToCloud = async (video_url: string) => {
   try {
     const cloudinaryUploadResponse = await cloudinary.uploader.upload(
       video_url,
-      { resource_type: "video" }
+      { resource_type: 'auto' }
     );
 
     return cloudinaryUploadResponse.secure_url;

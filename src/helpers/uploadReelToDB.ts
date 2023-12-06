@@ -8,7 +8,12 @@ async function uploadReelToDB(reel: InstagramPost, page: string) {
 
   try {
     // Upload video to cloudinary
-    const media_url = await uploadToCloud(reel.videoUrl);
+    // const media_url = await uploadToCloud(reel.videoUrl);
+
+    const [media_url, cover_url] = await Promise.all([
+      uploadToCloud(reel.videoUrl),
+      uploadToCloud(reel.displayUrl),
+    ]);
 
     const mediaType = 'reel';
 
@@ -18,6 +23,7 @@ async function uploadReelToDB(reel: InstagramPost, page: string) {
       video_url: reel.videoUrl,
       media_url: media_url,
       mediaType: mediaType,
+      cover_url: cover_url,
       page: page,
       publishMonth: currentMonthName,
       caption: reel.caption,

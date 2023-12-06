@@ -5,7 +5,7 @@ import { months } from '../../constants';
 
 export const createPosts = async (req: Request, res: Response) => {
   try {
-    const page = 'frenchiesforthewin';
+    const { page } = req.query;
 
     if (!page) {
       return res.status(400).send('Page name is required');
@@ -30,6 +30,7 @@ export const createPosts = async (req: Request, res: Response) => {
     const postsToInsert = tempPosts.map((tempPost) => ({
       source_reel_url: tempPost.source_reel_url,
       video_url: tempPost.video_url,
+      cover_url: tempPost.cover_url,
       media_url: tempPost.media_url,
       status: 'uploaded-to-cloud',
       page: tempPost.page,

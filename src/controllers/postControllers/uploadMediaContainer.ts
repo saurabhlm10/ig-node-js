@@ -29,7 +29,11 @@ export const uploadMediaContainer = async (req: Request, res: Response) => {
     const mediaToUpload = currentPost.media_url;
 
     // Upload Media, save creation_id and uploaded status to CSV
-    const creation_id = await uploadMedia(mediaToUpload, currentPost.caption);
+    const creation_id = await uploadMedia(
+      mediaToUpload,
+      currentPost.caption,
+      currentPost.cover_url
+    );
 
     if (!creation_id) {
       return res.status(400).json({

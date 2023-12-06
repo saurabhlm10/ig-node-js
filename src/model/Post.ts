@@ -12,6 +12,10 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    cover_url: {
+      type: String,
+      required: true,
+    },
     page: {
       type: String,
       required: true,

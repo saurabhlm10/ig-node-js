@@ -2,10 +2,13 @@ import axios from 'axios';
 import { AxiosError } from 'axios';
 import { isUploadSuccessful } from '../utils/isUploadSuccessful';
 
-export const publishMedia = async (
+export const publishMedia = async ({
+  creation_id,
+  currentPostId
+}: {
   creation_id: string,
-  currentPostId: number
-) => {
+  currentPostId: string
+}) => {
   console.log('publishMedia');
   const access_token = process.env.ACCESS_TOKEN;
   const ig_user_id = process.env.IG_USER_ID;

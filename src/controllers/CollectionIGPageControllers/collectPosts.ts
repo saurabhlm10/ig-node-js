@@ -70,7 +70,7 @@ export const collectPosts = async (req: Request, res: Response) => {
       );
 
       redisEntry.postOffset = redisEntry.postOffset + filteredReels.length;
-      redisEntry.pageOffset = redisEntry.pageOffset + limit;
+      redisEntry.pageOffset = redisEntry.pageOffset + Number(limit);
       redisEntry.status = StatusValues.SUCCESS;
       redisEntry.statusMessage = 'Collected Posts Successfully for ' + redisKey;
       await fetchRedis('set', redisKey, JSON.stringify(redisEntry));

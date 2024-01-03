@@ -6,7 +6,7 @@ const get10Pages = async (offset: number) => {
     const collectionPages = await CollectionIGPage.aggregate([
       { $sort: { followersCount: -1 } },
       { $skip: offset },
-      { $limit: limit },
+      { $limit: Number(limit) },
     ]);
 
     return collectionPages;

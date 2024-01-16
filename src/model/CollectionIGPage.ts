@@ -13,7 +13,7 @@ const CollectionIGPageSchema = new mongoose.Schema(
     },
     link: {
       type: String,
-      required: true,
+      // required: true,
     },
     page: {
       type: String,

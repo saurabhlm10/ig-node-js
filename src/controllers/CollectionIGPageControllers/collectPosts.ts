@@ -45,13 +45,11 @@ export const collectPosts = async (req: Request, res: Response) => {
 
     res.status(200).send(`Collecting posts for ${redisKey}`);
 
-    console.log('PASSEDJNCJKSNCKNSCJN');
+    console.log('PASSED sent request');
 
     while (redisEntry.postOffset < postsPerMonth) {
       // Get 10 DB entries sorted in descending order
-      const collectionPages = await get10Pages(redisEntry.pageOffset);
-
-      console.log('collectionPages', collectionPages);
+      const collectionPages = await get10Pages( page, redisEntry.pageOffset);
 
       const usernames = collectionPages!.map((page) => {
         return page.username;
@@ -60,10 +58,8 @@ export const collectPosts = async (req: Request, res: Response) => {
       // Get Reels from Apify
       const reels = await getReelsFromApify(usernames);
 
-      console.log('reels');
-
       // Filter out the reels by the criteria
-      const filteredReels = await getFilteredReels(reels);
+      const filteredReels = await getFilteredReels(reels, usernames);
 
       filteredReels.forEach(
         async (reel: InstagramPost) => await uploadReelToDB(reel, page)

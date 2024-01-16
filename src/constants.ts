@@ -1,6 +1,6 @@
 import { getDaysInCurrentMonth } from './helpers/getDaysInCurrentMonth';
 
-export const apifyPerUsernameResultLimit = process.env.APIFY_PER_USERNAME_RESULT_LIMIT;
+export const apifyPerUsernameResultLimit = Number(process.env.APIFY_PER_USERNAME_RESULT_LIMIT);
 export const limit = process.env.LIMIT;
 export const months = [
   'january',

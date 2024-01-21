@@ -38,6 +38,7 @@ export const createPosts = async (req: Request, res: Response) => {
           video_url: tempPost.video_url,
           cover_url: tempPost.cover_url,
           media_url: tempPost.media_url,
+          ownerUsername: tempPost.ownerUsername,
           status: 'uploaded-to-cloud',
           page: tempPost.page,
           publishMonth: tempPost.publishMonth,

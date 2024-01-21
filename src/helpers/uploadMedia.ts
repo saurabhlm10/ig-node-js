@@ -6,15 +6,11 @@ function urlEncodeString(string: string) {
   return encodeURIComponent(string);
 }
 
-function removeHashtags(text: string) {
-  return text.replace(/#[^\s#]+/g, '').trim();
-}
-
 export const uploadMedia = async (
   media_url: string,
-  caption: string,
   cover_url: string,
-  page: string
+  page: string,
+  ownerUsername: string
 ) => {
   console.log('uploadMedia');
 
@@ -34,7 +30,8 @@ export const uploadMedia = async (
 
     console.log('1');
 
-    const tempCaption = removeHashtags(caption);
+    // const tempCaption = removeHashtags(caption);
+    const tempCaption = `@${ownerUsername}}`
 
     const captionHastags = `
   

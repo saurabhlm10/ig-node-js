@@ -26,6 +26,10 @@ const tempPostSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    ownerUsername: {
+      type: String,
+      required: true,
+    },
     status: {
       type: String,
       enum: ['not-processed', 'processed'],

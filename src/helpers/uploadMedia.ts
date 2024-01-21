@@ -31,7 +31,7 @@ export const uploadMedia = async (
     console.log('1');
 
     // const tempCaption = removeHashtags(caption);
-    const tempCaption = `@${ownerUsername}}`
+    const tempCaption = `@${ownerUsername}`
 
     const captionHastags = `
   

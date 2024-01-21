@@ -8,6 +8,11 @@ export const uploadMediaContainer = async (req: Request, res: Response) => {
   try {
     console.log('uploadMediaContainer');
 
+    const { page } = req.query
+    console.log('page', page)
+
+    if (!page) return res.status(400).json({ message: 'page is required' })
+
     // Get Current Month
     const currentDate = new Date();
     const currentMonth = months[currentDate.getMonth()];
@@ -16,6 +21,7 @@ export const uploadMediaContainer = async (req: Request, res: Response) => {
     const currentPost = await Post.findOne({
       status: 'uploaded-to-cloud',
       publishMonth: currentMonth,
+      page
     });
 
     console.log(currentPost?._id);
@@ -32,7 +38,8 @@ export const uploadMediaContainer = async (req: Request, res: Response) => {
     const creation_id = await uploadMedia(
       mediaToUpload,
       currentPost.caption,
-      currentPost.cover_url
+      currentPost.cover_url,
+      page as string
     );
 
     if (!creation_id) {

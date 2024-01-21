@@ -7,6 +7,10 @@ import { months } from '../../constants';
 export const publishPost = async (req: Request, res: Response) => {
   try {
     console.log('1');
+    const { page } = req.query
+    console.log('page', page)
+
+    if (!page) return res.status(400).json({ message: 'page is required' })
 
     const currentDate = new Date();
     const currentMonth = months[currentDate.getMonth()];
@@ -14,9 +18,10 @@ export const publishPost = async (req: Request, res: Response) => {
     const currentPost = await Post.findOne({
       status: 'uploaded-media-container',
       publishMonth: currentMonth,
+      page
     });
 
-    console.log(currentPost);
+    console.log('currentPost', currentPost);
 
     console.log('2');
 
@@ -31,7 +36,8 @@ export const publishPost = async (req: Request, res: Response) => {
     // Publish Media, save published_id, update published status to Y in CSV
     const published_id = await publishMedia(
       creation_id,
-      Number(currentPost._id)
+      Number(currentPost._id),
+      page as string
     );
 
     console.log('4');
@@ -49,6 +55,7 @@ export const publishPost = async (req: Request, res: Response) => {
     });
   } catch (error) {
     if (error instanceof AxiosError) {
+      console.log(error.response?.data)
       return res.status(400).json(error.response?.data);
     }
     if (error instanceof Error) {

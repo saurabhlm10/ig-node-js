@@ -13,16 +13,18 @@ function removeHashtags(text: string) {
 export const uploadMedia = async (
   media_url: string,
   caption: string,
-  cover_url: string
+  cover_url: string,
+  page: string
 ) => {
   console.log('uploadMedia');
 
   try {
     console.log('beginn');
     const access_token = process.env.ACCESS_TOKEN;
-    const ig_user_id = process.env.IG_USER_ID;
 
-    console.log('access_token', access_token);
+    console.log(`${page.toUpperCase()}_IG_USER_ID`)
+    const ig_user_id = process.env[`${page.toUpperCase()}_IG_USER_ID`];
+
     console.log('ig_user_id', ig_user_id);
 
     const copyrightDisclaimer = `

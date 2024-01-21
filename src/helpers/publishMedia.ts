@@ -4,11 +4,12 @@ import { isUploadSuccessful } from '../utils/isUploadSuccessful';
 
 export const publishMedia = async (
   creation_id: string,
-  currentPostId: number
+  currentPostId: number,
+  page: string
 ) => {
   console.log('publishMedia');
   const access_token = process.env.ACCESS_TOKEN;
-  const ig_user_id = process.env.IG_USER_ID;
+  const ig_user_id = process.env[`${page.toUpperCase()}_IG_USER_ID`];
 
   try {
     const checkStatusUri = `https://graph.facebook.com/v17.0/${creation_id}?fields=status,status_code&access_token=${access_token}`;

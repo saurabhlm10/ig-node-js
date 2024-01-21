@@ -17,7 +17,7 @@ async function uploadReelToDB(reel: InstagramPost, page: string) {
       uploadToCloud(reel.displayUrl),
     ]);
 
-    console.log('cover_url',cover_url)
+    console.log('cover_url', cover_url)
 
     const mediaType = 'reel';
 
@@ -29,6 +29,7 @@ async function uploadReelToDB(reel: InstagramPost, page: string) {
       mediaType: mediaType,
       cover_url: cover_url,
       page: page,
+      ownerUsername: reel.ownerUsername,
       publishMonth: currentMonthName,
       caption: reel.caption,
     };

@@ -7,6 +7,8 @@ const client = new ApifyClient({
 });
 
 export const getReelsFromApify = async (usernames: string[]) => {
+  console.log('getting reels from apify')
+
   // Prepare Actor input
   const input = {
     username: usernames,

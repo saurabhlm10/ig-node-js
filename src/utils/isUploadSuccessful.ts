@@ -10,7 +10,7 @@ function _wait(n: number) {
   return new Promise((resolve) => setTimeout(resolve, n));
 }
 
-async function setStatus(currentPostId: string, statusMessage: string) {
+async function setStatus(currentPostId: number, statusMessage: string) {
   console.log('setStatus')
   const post = await Post.findById(currentPostId);
   let errorMessage = ''
@@ -57,7 +57,7 @@ async function setStatus(currentPostId: string, statusMessage: string) {
 export const isUploadSuccessful = async (
   retryCount: number,
   checkStatusUri: string,
-  currentPostId: string
+  currentPostId: number
 ): Promise<boolean> => {
   try {
     console.log(retryCount);

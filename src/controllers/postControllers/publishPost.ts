@@ -34,11 +34,11 @@ export const publishPost = async (req: Request, res: Response) => {
     console.log('creation_id', creation_id);
 
     // Publish Media, save published_id, update published status to Y in CSV
-    const published_id = await publishMedia(
+    const published_id = await publishMedia({
       creation_id,
-      Number(currentPost._id),
-      page as string
-    );
+      currentPostId: Number(currentPost._id),
+      page: page as string
+    });
 
     console.log('4');
 

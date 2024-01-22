@@ -10,8 +10,12 @@ function _wait(n: number) {
   return new Promise((resolve) => setTimeout(resolve, n));
 }
 
-async function setStatus(currentPostId: number, statusMessage: string) {
+async function setStatus(currentPostId: string, statusMessage: string) {
+  console.log('setStatus')
   const post = await Post.findById(currentPostId);
+  let errorMessage = ''
+
+  console.log('post', post)
 
   if (!post) {
     throw new Error('Post does not exist');
@@ -20,18 +24,27 @@ async function setStatus(currentPostId: number, statusMessage: string) {
   switch (statusMessage) {
     case 'PUBLISHED':
       post.status = 'published';
+      errorMessage = 'Post is already published'
       break;
     case 'EXPIRED':
       post.status = 'uploaded-to-cloud';
+      errorMessage = 'Media container has expired'
       break;
     case 'ERROR':
       post.status = 'error';
+      errorMessage = 'An error occured while checking media container'
       break;
     default:
       throw new Error('Invalid status message');
   }
 
+
+
   await post.save();
+
+  console.log('errorMessage', errorMessage)
+
+  throw new Error(errorMessage);
 }
 
 /**
@@ -44,7 +57,7 @@ async function setStatus(currentPostId: number, statusMessage: string) {
 export const isUploadSuccessful = async (
   retryCount: number,
   checkStatusUri: string,
-  currentPostId: number
+  currentPostId: string
 ): Promise<boolean> => {
   try {
     console.log(retryCount);
@@ -56,6 +69,7 @@ export const isUploadSuccessful = async (
       response.data.status_code === 'EXPIRED'
     ) {
       // Update the published status of the post and save to DB
+      console.log('currentPostId inside isUploadSuccessful', currentPostId)
       await setStatus(currentPostId, response.data.status_code);
       return true;
     }

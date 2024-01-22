@@ -73,7 +73,9 @@ export const uploadMedia = async (
   } catch (error) {
     // console.log(error);
     if (error instanceof AxiosError) {
-      console.log(JSON.stringify(error.response?.data));
+      console.log(error.response?.data.error.message);
+      // Check if it is Graph API error
+      if (error.response?.data?.error?.message) throw new Error(error.response?.data.error.message);
 
       throw new Error(error.response?.data);
     }

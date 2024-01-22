@@ -33,6 +33,10 @@ export const publishMedia = async (
   } catch (error) {
     if (error instanceof AxiosError) {
       console.log(JSON.stringify(error.response?.data));
+
+      // Check if it is Graph API error
+      if (error.response?.data?.error?.message) throw new Error(error.response?.data.error.message);
+
       throw new Error(error.response?.data);
     }
     if (error instanceof Error) {

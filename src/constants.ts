@@ -19,5 +19,5 @@ export const months = [
 
 const postsPerDay = Number(process.env.POSTS_PER_DAY as string);
 const daysInCurrentMonth = getDaysInCurrentMonth();
-// export const postsPerMonth = 2;
-export const postsPerMonth = postsPerDay * daysInCurrentMonth;
+export const postsPerMonth = 2;
+// export const postsPerMonth = postsPerDay * daysInCurrentMonth;

@@ -27,4 +27,8 @@ export const fetchRedis = async (command: string, ...args: string[]) => {
   }
 
   if (command === 'set' || command === 'zadd') return;
+
+  if (command === 'del') {
+    return response.data.result; // This should return the number of keys that were removed
+  }
 };

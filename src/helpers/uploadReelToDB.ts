@@ -1,6 +1,6 @@
-import { months } from "../constants/months.js";
-import TempPost from "../model/TempPost.js";
-import { uploadToCloud } from "./uploadToCloud.js";
+import { months } from '../constants';
+import TempPost from '../model/TempPost';
+import { uploadToCloud } from './uploadToCloud';
 
 async function uploadReelToDB(reel: InstagramPost, page: string) {
   const currentDate = new Date();
@@ -8,9 +8,18 @@ async function uploadReelToDB(reel: InstagramPost, page: string) {
 
   try {
     // Upload video to cloudinary
-    const media_url = await uploadToCloud(reel.videoUrl);
+    // const media_url = await uploadToCloud(reel.videoUrl);
 
-    const mediaType = "reel";
+    // console.log(reel)
+
+    const [media_url, cover_url] = await Promise.all([
+      uploadToCloud(reel.videoUrl),
+      uploadToCloud(reel.displayUrl),
+    ]);
+
+    console.log('cover_url', cover_url)
+
+    const mediaType = 'reel';
 
     // Add Post to Mongo
     const post = {
@@ -18,7 +27,9 @@ async function uploadReelToDB(reel: InstagramPost, page: string) {
       video_url: reel.videoUrl,
       media_url: media_url,
       mediaType: mediaType,
+      cover_url: cover_url,
       page: page,
+      ownerUsername: reel.ownerUsername,
       publishMonth: currentMonthName,
       caption: reel.caption,
     };

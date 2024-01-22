@@ -7,11 +7,12 @@ export const publishMedia = async ({
   currentPostId
 }: {
   creation_id: string,
-  currentPostId: string
-}) => {
+  currentPostId: number,
+  page: string
+) => {
   console.log('publishMedia');
   const access_token = process.env.ACCESS_TOKEN;
-  const ig_user_id = process.env.IG_USER_ID;
+  const ig_user_id = process.env[`${page.toUpperCase()}_IG_USER_ID`];
 
   try {
     const checkStatusUri = `https://graph.facebook.com/v17.0/${creation_id}?fields=status,status_code&access_token=${access_token}`;
@@ -35,6 +36,10 @@ export const publishMedia = async ({
   } catch (error) {
     if (error instanceof AxiosError) {
       console.log(JSON.stringify(error.response?.data));
+
+      // Check if it is Graph API error
+      if (error.response?.data?.error?.message) throw new Error(error.response?.data.error.message);
+
       throw new Error(error.response?.data);
     }
     if (error instanceof Error) {

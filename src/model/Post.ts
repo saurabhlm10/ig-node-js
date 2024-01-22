@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import { months } from "../constants/months";
+import mongoose from 'mongoose';
+import { months } from '../constants';
 
 const postSchema = new mongoose.Schema(
   {
@@ -9,6 +9,14 @@ const postSchema = new mongoose.Schema(
       unique: true,
     },
     video_url: {
+      type: String,
+      required: true,
+    },
+    cover_url: {
+      type: String,
+      required: true,
+    },
+    ownerUsername: {
       type: String,
       required: true,
     },
@@ -35,12 +43,12 @@ const postSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: [
-        "uploaded-to-cloud",
-        "uploaded-media-container",
-        "published",
-        "error",
+        'uploaded-to-cloud',
+        'uploaded-media-container',
+        'published',
+        'error',
       ],
-      default: "uploaded-to-cloud",
+      default: 'uploaded-to-cloud',
     },
     creation_id: {
       type: String,
@@ -68,6 +76,6 @@ const postSchema = new mongoose.Schema(
   }
 );
 
-const Post = mongoose.model("Post", postSchema);
+const Post = mongoose.model('Post', postSchema);
 
 export default Post;

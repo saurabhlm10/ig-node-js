@@ -1,12 +1,13 @@
-import CollectionIGPage from "../model/CollectionIGPage.js";
-import { limit } from "../constants/dbquery.js";
+import { limit } from '../constants';
+import CollectionIGPage from '../model/CollectionIGPage';
 
-const get10Pages = async (offset: number) => {
+const get10Pages = async (page: string, offset: number) => {
   try {
     const collectionPages = await CollectionIGPage.aggregate([
+      { $match: { page: page } }, 
       { $sort: { followersCount: -1 } },
       { $skip: offset },
-      { $limit: limit },
+      { $limit: Number(limit) },
     ]);
 
     return collectionPages;
@@ -16,10 +17,7 @@ const get10Pages = async (offset: number) => {
     } else {
       console.log('An unexpected error occurred', error);
     }
-
   }
 };
 
 export { get10Pages };
-
-

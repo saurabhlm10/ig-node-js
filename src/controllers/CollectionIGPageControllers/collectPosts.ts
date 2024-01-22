@@ -1,51 +1,57 @@
-import { fetchRedis } from "../../helpers/fetchRedis.js";
-import { months } from "../../constants/months.js";
-import { getReelsFromApify } from "../../helpers/getReelsFromApify.js";
-import { postsPerMonth } from "../../constants/postsPerDay.js";
-import { getFilteredReels } from "../../helpers/getFilteredReels.js";
-import { uploadReelToDB } from "../../helpers/uploadReelToDB.js";
-import { get10Pages } from "../../helpers/get10Pages.js";
-import { limit } from "../../constants/dbquery.js";
-import { Request, Response } from "express";
+import { fetchRedis } from '../../helpers/fetchRedis';
+import { getReelsFromApify } from '../../helpers/getReelsFromApify';
+import { getFilteredReels } from '../../helpers/getFilteredReels';
+import { uploadReelToDB } from '../../helpers/uploadReelToDB';
+import { get10Pages } from '../../helpers/get10Pages';
+import { Request, Response } from 'express';
+import { getCurrentMonthYearName } from '../../helpers/getCurrentMonthYearName';
+import { RedisEntry, StatusValues } from '../../types/RedisEntry.type';
+import { limit, postsPerMonth } from '../../constants';
 
 export const collectPosts = async (req: Request, res: Response) => {
+  const { page, mediaType } = req.params;
+
+  if (!(page || mediaType)) return res.status(400).json({ message: 'page and mediaType in required' })
+
+  console.log('Getting Month-Year');
+
+  // Get current Month Name
+  const currentMonthYearName = getCurrentMonthYearName();
+
+  const redisKey = page + '-' + currentMonthYearName + '-' + mediaType;
+
+  // Object for maintaining state in Redis
+  let redisEntry: RedisEntry = {
+    postOffset: 0,
+    pageOffset: 0,
+    status: StatusValues.IN_PROGRESS,
+    statusMessage: `Collecting posts for ` + redisKey,
+  };
+
+  console.log('Checking If Current State In Redis');
   try {
-    const page = "frenchiesforthewin";
-    const mediaType = "reels";
-
-    // Object for maintaining state in Redis
-    let redisEntry = {
-      postOffset: 0,
-      pageOffset: 0,
-    };
-
-    console.log("Getting Month-Year");
-
-    // Get current Month Name
-    const currentDate = new Date();
-    const currentMonthYearName = `${months[currentDate.getMonth()]}-${currentDate.getFullYear()}`;
-
-    const redisKey = page + "-" + currentMonthYearName + "-" + mediaType;
-
-    console.log("Checking If Current State In Redis");
     // Get Current State from Redis
-    const rawResponse = await fetchRedis("get", redisKey);
+    const rawResponse = await fetchRedis('get', redisKey);
 
-    console.log("rawResponse", rawResponse);
+    console.log('rawResponse', rawResponse);
 
     if (!rawResponse) {
       // Create entry in Redis
-      console.log("Creating Entry In Redis");
-      await fetchRedis("set", redisKey, JSON.stringify(redisEntry));
+      console.log('Creating Entry In Redis');
+      await fetchRedis('set', redisKey, JSON.stringify(redisEntry));
     } else {
-      console.log("Got Entry From Redis");
+      console.log('Got Entry From Redis');
       redisEntry.postOffset = rawResponse.postOffset;
       redisEntry.pageOffset = rawResponse.pageOffset;
     }
 
+    res.status(200).send(`Collecting posts for ${redisKey}`);
+
+    console.log('PASSED sent request');
+
     while (redisEntry.postOffset < postsPerMonth) {
       // Get 10 DB entries sorted in descending order
-      const collectionPages = await get10Pages(redisEntry.pageOffset);
+      const collectionPages = await get10Pages(page, redisEntry.pageOffset);
 
       const usernames = collectionPages!.map((page) => {
         return page.username;
@@ -55,22 +61,28 @@ export const collectPosts = async (req: Request, res: Response) => {
       const reels = await getReelsFromApify(usernames);
 
       // Filter out the reels by the criteria
-      const filteredReels = await getFilteredReels(reels);
+      const filteredReels = await getFilteredReels(reels, usernames);
 
-      filteredReels.forEach(async (reel: InstagramPost) => await uploadReelToDB(reel, page));
+      filteredReels.forEach(
+        async (reel: InstagramPost) => await uploadReelToDB(reel, page)
+      );
 
       redisEntry.postOffset = redisEntry.postOffset + filteredReels.length;
-      redisEntry.pageOffset = redisEntry.pageOffset + limit;
-
-      await fetchRedis("set", redisKey, JSON.stringify(redisEntry));
+      redisEntry.pageOffset = redisEntry.pageOffset + Number(limit);
+      redisEntry.status = StatusValues.SUCCESS;
+      redisEntry.statusMessage = 'Collected Posts Successfully for ' + redisKey;
+      await fetchRedis('set', redisKey, JSON.stringify(redisEntry));
     }
 
-    return res.status(200).send(redisEntry);
+    console.log('Collected Posts Successfully');
+
+    return;
   } catch (error) {
     if (error instanceof Error) {
       console.log(error.message);
-      return res.status(500).send(error.message);
-
+      redisEntry.status = StatusValues.ERROR;
+      redisEntry.statusMessage = error.message;
+      await fetchRedis('set', redisKey, JSON.stringify(redisEntry));
     } else {
       console.log('An unexpected error occurred', error);
     }

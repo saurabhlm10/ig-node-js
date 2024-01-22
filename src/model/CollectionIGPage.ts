@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const CollectionIGPageSchema = new mongoose.Schema(
   {
@@ -13,6 +13,11 @@ const CollectionIGPageSchema = new mongoose.Schema(
     },
     link: {
       type: String,
+      // required: true,
+    },
+    page: {
+      type: String,
+      required: true,
     },
   },
   {
@@ -20,11 +25,14 @@ const CollectionIGPageSchema = new mongoose.Schema(
   }
 );
 
-CollectionIGPageSchema.pre("save", function (next) {
-  this.link = "https://www.instagram.com/" + this.username;
+CollectionIGPageSchema.pre('save', function (next) {
+  this.link = 'https://www.instagram.com/' + this.username;
   next();
 });
 
-const CollectionIGPage = mongoose.model("CollectionIGPage", CollectionIGPageSchema);
+const CollectionIGPage = mongoose.model(
+  'CollectionIGPage',
+  CollectionIGPageSchema
+);
 
 export default CollectionIGPage;

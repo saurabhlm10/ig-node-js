@@ -4,11 +4,13 @@ import { isUploadSuccessful } from '../utils/isUploadSuccessful';
 
 export const publishMedia = async ({
   creation_id,
-  currentPostId
+  currentPostId,
+  page
 }: {
   creation_id: string,
   currentPostId: number,
   page: string
+}
 ) => {
   console.log('publishMedia');
   const access_token = process.env.ACCESS_TOKEN;

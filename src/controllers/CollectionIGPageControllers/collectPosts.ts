@@ -11,6 +11,8 @@ import { limit, postsPerMonth } from '../../constants';
 export const collectPosts = async (req: Request, res: Response) => {
   const { page, mediaType } = req.params;
 
+  if (!(page || mediaType)) return res.status(400).json({ message: 'page and mediaType in required' })
+
   console.log('Getting Month-Year');
 
   // Get current Month Name
@@ -49,7 +51,7 @@ export const collectPosts = async (req: Request, res: Response) => {
 
     while (redisEntry.postOffset < postsPerMonth) {
       // Get 10 DB entries sorted in descending order
-      const collectionPages = await get10Pages( page, redisEntry.pageOffset);
+      const collectionPages = await get10Pages(page, redisEntry.pageOffset);
 
       const usernames = collectionPages!.map((page) => {
         return page.username;

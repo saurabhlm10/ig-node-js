@@ -27,9 +27,6 @@ function getFilteredReels(reels: any, usernames: string[]) {
   console.log('reels before filtered by algo', reels.length)
   const newReels: any = getFilteredReelsByMonth(reels)
 
-  console.log(typeof newReels)
-  console.log(newReels)
-
   const reelsByOwner: any = {};
 
   // Initialize entries for each page in the object

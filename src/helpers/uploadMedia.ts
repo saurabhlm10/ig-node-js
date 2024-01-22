@@ -1,6 +1,10 @@
 import axios from 'axios';
 import { AxiosError } from 'axios';
 
+function removeHashtags(text: string) {
+  return text.replace(/#[^\s#]+/g, '').trim();
+}
+
 // function to encode caption
 function urlEncodeString(string: string) {
   return encodeURIComponent(string);
@@ -9,8 +13,9 @@ function urlEncodeString(string: string) {
 export const uploadMedia = async (
   media_url: string,
   cover_url: string,
+  caption: string,
   page: string,
-  ownerUsername: string
+  // ownerUsername: string
 ) => {
   console.log('uploadMedia');
 
@@ -30,8 +35,8 @@ export const uploadMedia = async (
 
     console.log('1');
 
-    // const tempCaption = removeHashtags(caption);
-    const tempCaption = `@${ownerUsername}`
+    const tempCaption = removeHashtags(caption);
+    // const tempCaption = `@${ownerUsername}`
 
     const captionHastags = `
   

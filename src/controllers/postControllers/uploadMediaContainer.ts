@@ -38,8 +38,9 @@ export const uploadMediaContainer = async (req: Request, res: Response) => {
     const creation_id = await uploadMedia(
       mediaToUpload,
       currentPost.cover_url,
+      currentPost.caption,
       page as string,
-      currentPost.ownerUsername
+      // currentPost.ownerUsername
     );
 
     if (!creation_id) {

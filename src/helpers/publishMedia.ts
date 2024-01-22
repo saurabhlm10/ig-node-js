@@ -2,7 +2,10 @@ import axios from 'axios';
 import { AxiosError } from 'axios';
 import { isUploadSuccessful } from '../utils/isUploadSuccessful';
 
-export const publishMedia = async (
+export const publishMedia = async ({
+  creation_id,
+  currentPostId
+}: {
   creation_id: string,
   currentPostId: number,
   page: string

@@ -8,6 +8,7 @@ import statusRoutes from './routes/statusRoutes';
 import batchRoutes from './routes/batch.route';
 import morgan from 'morgan';
 import cors from 'cors';
+import os from 'os'
 
 const port = process.env.PORT || 4000;
 
@@ -18,6 +19,7 @@ app.use('/api/page', pageRoutes);
 app.use('/api/status', statusRoutes);
 app.use('/api/batch', batchRoutes);
 
+console.log('CPUS', os.cpus().length)
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);

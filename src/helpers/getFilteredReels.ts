@@ -6,16 +6,16 @@ const getFilteredReelsByMonth = (reels: any) => {
   const currentDate = new Date();
 
   // Filter out Reels from Current Month
-  // const currentMonth = currentDate.getMonth() || 12;
-  const currentMonth = currentDate.getMonth();
+  const currentMonth = currentDate.getMonth() || 12;
+  // const currentMonth = currentDate.getMonth();
 
   const reelsFilteredByMonth = reels.filter((reel: InstagramPost) => {
     const reelDate = new Date(reel.timestamp);
 
     console.log('reelDate.getMonth()', reelDate.getMonth())
 
-    // return reelDate.getMonth() === currentMonth - 1;
-    return reelDate.getMonth() === currentMonth;
+    return reelDate.getMonth() === currentMonth - 1;
+    // return reelDate.getMonth() === currentMonth;
   });
 
   console.log('reelsFilteredByMonth', reelsFilteredByMonth.length)

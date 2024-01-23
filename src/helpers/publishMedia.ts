@@ -8,11 +8,12 @@ export const publishMedia = async ({
   page
 }: {
   creation_id: string,
-  currentPostId: number,
+  currentPostId: string,
   page: string
 }
 ) => {
   console.log('publishMedia');
+  console.log('currentPostId', currentPostId)
   const access_token = process.env.ACCESS_TOKEN;
   const ig_user_id = process.env[`${page.toUpperCase()}_IG_USER_ID`];
 

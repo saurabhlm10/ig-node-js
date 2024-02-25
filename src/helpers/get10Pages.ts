@@ -1,13 +1,13 @@
-import { limit } from '../constants';
-import CollectionIGPage from '../model/CollectionIGPage';
+import { ENV } from "../constants";
+import CollectionIGPage from "../model/CollectionIGPage";
 
 const get10Pages = async (page: string, offset: number) => {
   try {
     const collectionPages = await CollectionIGPage.aggregate([
-      { $match: { page: page } }, 
+      { $match: { page: page } },
       { $sort: { followersCount: -1 } },
       { $skip: offset },
-      { $limit: Number(limit) },
+      { $limit: Number(ENV.limit) },
     ]);
 
     return collectionPages;
@@ -15,7 +15,7 @@ const get10Pages = async (page: string, offset: number) => {
     if (error instanceof Error) {
       console.log(error.message);
     } else {
-      console.log('An unexpected error occurred', error);
+      console.log("An unexpected error occurred", error);
     }
   }
 };

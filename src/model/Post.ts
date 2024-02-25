@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import { months } from '../constants';
+import mongoose from "mongoose";
+import { ENV } from "../constants";
 
 const postSchema = new mongoose.Schema(
   {
@@ -27,7 +27,7 @@ const postSchema = new mongoose.Schema(
     publishMonth: {
       type: String,
       required: true,
-      enum: months,
+      enum: ENV.months,
     },
     caption: {
       type: String,
@@ -43,12 +43,12 @@ const postSchema = new mongoose.Schema(
     status: {
       type: String,
       enum: [
-        'uploaded-to-cloud',
-        'uploaded-media-container',
-        'published',
-        'error',
+        "uploaded-to-cloud",
+        "uploaded-media-container",
+        "published",
+        "error",
       ],
-      default: 'uploaded-to-cloud',
+      default: "uploaded-to-cloud",
     },
     creation_id: {
       type: String,
@@ -76,6 +76,6 @@ const postSchema = new mongoose.Schema(
   }
 );
 
-const Post = mongoose.model('Post', postSchema);
+const Post = mongoose.model("Post", postSchema);
 
 export default Post;

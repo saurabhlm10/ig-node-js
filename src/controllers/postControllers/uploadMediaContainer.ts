@@ -1,34 +1,34 @@
-import { Request, Response } from 'express';
-import { uploadMedia } from '../../helpers/uploadMedia';
-import { AxiosError } from 'axios';
-import Post from '../../model/Post';
-import { months } from '../../constants';
+import { Request, Response } from "express";
+import { uploadMedia } from "../../helpers/uploadMedia";
+import { AxiosError } from "axios";
+import Post from "../../model/Post";
+import { ENV } from "../../constants";
 
 export const uploadMediaContainer = async (req: Request, res: Response) => {
   try {
-    console.log('uploadMediaContainer');
+    console.log("uploadMediaContainer");
 
-    const { page } = req.query
-    console.log('page', page)
+    const { page } = req.query;
+    console.log("page", page);
 
-    if (!page) return res.status(400).json({ message: 'page is required' })
+    if (!page) return res.status(400).json({ message: "page is required" });
 
     // Get Current Month
     const currentDate = new Date();
-    const currentMonth = months[currentDate.getMonth()];
+    const currentMonth = ENV.months[currentDate.getMonth()];
 
     // Find one post to upload from current month
     const currentPost = await Post.findOne({
-      status: 'uploaded-to-cloud',
+      status: "uploaded-to-cloud",
       publishMonth: currentMonth,
-      page
+      page,
     });
 
     console.log(currentPost?._id);
 
     if (!currentPost) {
       return res.status(400).json({
-        message: 'No Posts To Be Uploaded',
+        message: "No Posts To Be Uploaded",
       });
     }
 
@@ -39,24 +39,24 @@ export const uploadMediaContainer = async (req: Request, res: Response) => {
       mediaToUpload,
       currentPost.cover_url,
       currentPost.caption,
-      page as string,
+      page as string
       // currentPost.ownerUsername
     );
 
     if (!creation_id) {
       return res.status(400).json({
-        message: 'Failed to upload media',
+        message: "Failed to upload media",
       });
     }
 
     currentPost.creation_id = creation_id;
 
-    currentPost.status = 'uploaded-media-container';
+    currentPost.status = "uploaded-media-container";
 
     await currentPost.save();
 
     return res.status(200).json({
-      message: 'Media Uploaded successfully',
+      message: "Media Uploaded successfully",
       creation_id,
     });
   } catch (error) {

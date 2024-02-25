@@ -1,10 +1,10 @@
-import { months } from '../constants';
-import TempPost from '../model/TempPost';
-import { uploadToCloud } from './uploadToCloud';
+import { ENV } from "../constants";
+import TempPost from "../model/TempPost";
+import { uploadToCloud } from "./uploadToCloud";
 
 async function uploadReelToDB(reel: InstagramPost, page: string) {
   const currentDate = new Date();
-  const currentMonthName = months[currentDate.getMonth()];
+  const currentMonthName = ENV.months[currentDate.getMonth()];
 
   try {
     // Upload video to cloudinary
@@ -17,9 +17,9 @@ async function uploadReelToDB(reel: InstagramPost, page: string) {
       uploadToCloud(reel.displayUrl),
     ]);
 
-    console.log('cover_url', cover_url)
+    console.log("cover_url", cover_url);
 
-    const mediaType = 'reel';
+    const mediaType = "reel";
 
     // Add Post to Mongo
     const post = {
@@ -39,7 +39,7 @@ async function uploadReelToDB(reel: InstagramPost, page: string) {
     if (error instanceof Error) {
       console.log(error.message);
     } else {
-      console.log('An unexpected error occurred', error);
+      console.log("An unexpected error occurred", error);
     }
   }
 }

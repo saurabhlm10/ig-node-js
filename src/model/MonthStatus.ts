@@ -1,11 +1,11 @@
-import mongoose from 'mongoose';
-import { months } from '../constants';
+import mongoose from "mongoose";
+import { ENV } from "../constants";
 
 export enum MonthStatusStatusValues {
-  NOT_UPDATED = 'not-updated',
-  SUCCESS = 'success',
-  FAIL = 'fail',
-  IN_PROGRESS = 'in-progress',
+  NOT_UPDATED = "not-updated",
+  SUCCESS = "success",
+  FAIL = "fail",
+  IN_PROGRESS = "in-progress",
 }
 
 const monthStatusSchema = new mongoose.Schema(
@@ -17,7 +17,7 @@ const monthStatusSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      enum: months,
+      enum: ENV.months,
       unique: true,
     },
     year: {
@@ -33,7 +33,7 @@ const monthStatusSchema = new mongoose.Schema(
     statusMessage: {
       type: String,
       required: true,
-      default: 'Not Updated Yet',
+      default: "Not Updated Yet",
     },
   },
   {
@@ -41,6 +41,6 @@ const monthStatusSchema = new mongoose.Schema(
   }
 );
 
-const MonthStatus = mongoose.model('MonthStatus', monthStatusSchema);
+const MonthStatus = mongoose.model("MonthStatus", monthStatusSchema);
 
 export default MonthStatus;

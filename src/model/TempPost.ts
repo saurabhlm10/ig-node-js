@@ -1,5 +1,5 @@
-import mongoose from 'mongoose';
-import { months } from '../constants';
+import mongoose from "mongoose";
+import { ENV } from "../constants";
 
 const tempPostSchema = new mongoose.Schema(
   {
@@ -32,8 +32,8 @@ const tempPostSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['not-processed', 'processed'],
-      default: 'not-processed',
+      enum: ["not-processed", "processed"],
+      default: "not-processed",
     },
     page: {
       type: String,
@@ -42,7 +42,7 @@ const tempPostSchema = new mongoose.Schema(
     publishMonth: {
       type: String,
       required: true,
-      enum: months,
+      enum: ENV.months,
     },
     caption: {
       type: String,
@@ -54,6 +54,6 @@ const tempPostSchema = new mongoose.Schema(
   }
 );
 
-const TempPost = mongoose.model('TempPost', tempPostSchema);
+const TempPost = mongoose.model("TempPost", tempPostSchema);
 
 export default TempPost;

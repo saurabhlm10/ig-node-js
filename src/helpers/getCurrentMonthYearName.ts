@@ -1,9 +1,9 @@
-import { months } from '../constants';
+import { ENV } from "../constants";
 
 export const getCurrentMonthYearName = (): string => {
   const currentDate = new Date();
   const currentMonthYearName = `${
-    months[currentDate.getMonth()]
+    ENV.months[currentDate.getMonth()]
   }-${currentDate.getFullYear()}`;
 
   return currentMonthYearName;

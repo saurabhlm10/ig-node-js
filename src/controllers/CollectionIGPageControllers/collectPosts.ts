@@ -48,7 +48,7 @@ export const collectPosts = async (req: Request, res: Response) => {
 
     res.status(200).send(`Collecting posts for ${redisKey}`);
 
-    console.log("PASSED sent request");
+    console.log("Number Of Posts To Collect", ENV.postsPerMonth);
 
     while (redisEntry.postOffset < ENV.postsPerMonth) {
       // Get 10 DB entries sorted in descending order
@@ -70,12 +70,16 @@ export const collectPosts = async (req: Request, res: Response) => {
 
       redisEntry.postOffset = redisEntry.postOffset + filteredReels.length;
       redisEntry.pageOffset = redisEntry.pageOffset + Number(ENV.limit);
-      redisEntry.status = StatusValues.SUCCESS;
-      redisEntry.statusMessage = "Collected Posts Successfully for " + redisKey;
+      redisEntry.status = StatusValues.IN_PROGRESS;
+      redisEntry.statusMessage = "Collecting Posts for " + redisKey;
       await fetchRedis("set", redisKey, JSON.stringify(redisEntry));
     }
 
     console.log("Collected Posts Successfully");
+
+    redisEntry.status = StatusValues.SUCCESS;
+    redisEntry.statusMessage = "Collected Posts Successfully for " + redisKey;
+    await fetchRedis("set", redisKey, JSON.stringify(redisEntry));
 
     return;
   } catch (error) {

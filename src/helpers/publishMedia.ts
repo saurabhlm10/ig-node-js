@@ -1,20 +1,20 @@
-import axios from 'axios';
-import { AxiosError } from 'axios';
-import { isUploadSuccessful } from '../utils/isUploadSuccessful';
+import axios from "axios";
+import { AxiosError } from "axios";
+import { isUploadSuccessful } from "../utils/isUploadSuccessful";
+import { ENV } from "../constants";
 
 export const publishMedia = async ({
   creation_id,
   currentPostId,
-  page
+  page,
 }: {
-  creation_id: string,
-  currentPostId: string,
-  page: string
-}
-) => {
-  console.log('publishMedia');
-  console.log('currentPostId', currentPostId)
-  const access_token = process.env.ACCESS_TOKEN;
+  creation_id: string;
+  currentPostId: string;
+  page: string;
+}) => {
+  console.log("publishMedia");
+  console.log("currentPostId", currentPostId);
+  const access_token = ENV.access_token;
   const ig_user_id = process.env[`${page.toUpperCase()}_IG_USER_ID`];
 
   try {
@@ -25,15 +25,15 @@ export const publishMedia = async ({
       currentPostId
     );
 
-    console.log('isUploaded', isUploaded);
+    console.log("isUploaded", isUploaded);
 
-    console.log('1');
+    console.log("1");
 
     // When uploaded successfully, publish the video
     if (isUploaded) {
       const publishVideoUri = `https://graph.facebook.com/v17.0/${ig_user_id}/media_publish?creation_id=${creation_id}&access_token=${access_token}`;
       const publishResponse = await axios.post(publishVideoUri);
-      console.log('publishedid', publishResponse.data.id);
+      console.log("publishedid", publishResponse.data.id);
       return publishResponse.data.id;
     }
   } catch (error) {
@@ -41,7 +41,8 @@ export const publishMedia = async ({
       console.log(JSON.stringify(error.response?.data));
 
       // Check if it is Graph API error
-      if (error.response?.data?.error?.message) throw new Error(error.response?.data.error.message);
+      if (error.response?.data?.error?.message)
+        throw new Error(error.response?.data.error.message);
 
       throw new Error(error.response?.data);
     }

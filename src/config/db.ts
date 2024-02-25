@@ -1,13 +1,14 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
+import { ENV } from "../constants";
 
 const connectToDb = () => {
   mongoose
-    .connect(process.env.MONGO_URL as string)
+    .connect(ENV.MONGO_URL)
     .then((conn) => {
       console.log(`connected to db at ${conn.connection.host}`);
     })
     .catch((error) => {
-      console.log(error.message, 'wrong password');
+      console.log(error.message, "wrong password");
       process.exit(1);
     });
 };

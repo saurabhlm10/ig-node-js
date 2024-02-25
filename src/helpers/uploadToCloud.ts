@@ -1,16 +1,17 @@
-import { v2 as cloudinary } from 'cloudinary';
+import { v2 as cloudinary } from "cloudinary";
+import { ENV } from "../constants";
 
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
+  cloud_name: ENV.cloudinary_cloud_name,
+  api_key: ENV.cloudinary_api_key,
+  api_secret: ENV.cloudinary_api_secret,
 });
 
 export const uploadToCloud = async (video_url: string) => {
   try {
     const cloudinaryUploadResponse = await cloudinary.uploader.upload(
       video_url,
-      { resource_type: 'auto' }
+      { resource_type: "auto" }
     );
 
     return cloudinaryUploadResponse.secure_url;

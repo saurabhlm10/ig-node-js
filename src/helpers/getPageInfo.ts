@@ -1,9 +1,10 @@
 import { ApifyClient } from "apify-client";
-import process from 'process';
+import process from "process";
+import { ENV } from "../constants";
 
 // Initialize the ApifyClient with API token
 const client = new ApifyClient({
-  token: process.env.APIFY_KEY,
+  token: ENV.APIFY_KEY,
 });
 
 export const getPageInfo = async (pageUsernames: string[]) => {

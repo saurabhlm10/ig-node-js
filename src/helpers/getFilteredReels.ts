@@ -1,7 +1,7 @@
-const fs = require('fs')
+const fs = require("fs");
 
 const getFilteredReelsByMonth = (reels: any) => {
-  console.log('reels before filtered by month', reels.length)
+  console.log("reels before filtered by month", reels.length);
 
   const currentDate = new Date();
 
@@ -12,33 +12,34 @@ const getFilteredReelsByMonth = (reels: any) => {
   const reelsFilteredByMonth = reels.filter((reel: InstagramPost) => {
     const reelDate = new Date(reel.timestamp);
 
-    console.log('reelDate.getMonth()', reelDate.getMonth())
+    console.log("reelDate.getMonth()", reelDate.getMonth());
 
     return reelDate.getMonth() === currentMonth - 1;
     // return reelDate.getMonth() === currentMonth;
   });
 
-  console.log('reelsFilteredByMonth', reelsFilteredByMonth.length)
+  console.log("reelsFilteredByMonth", reelsFilteredByMonth.length);
 
   return reelsFilteredByMonth;
 };
 
 function getFilteredReels(reels: any, usernames: string[]) {
-  console.log('reels before filtered by algo', reels.length)
-  const newReels: any = getFilteredReelsByMonth(reels)
+  console.log("reels before filtered by algo", reels.length);
+  const newReels: any = getFilteredReelsByMonth(reels);
+  // const newReels: any = reels;
 
   const reelsByOwner: any = {};
 
   // Initialize entries for each page in the object
   usernames.forEach(
     (username) =>
-    (reelsByOwner[username] = new Object({
-      reels: [],
-      avgViewCount: 0,
-    }))
+      (reelsByOwner[username] = new Object({
+        reels: [],
+        avgViewCount: 0,
+      }))
   );
 
-  console.log('PASSED username')
+  console.log("PASSED username");
 
   // Sort out the reels by owner and place them in the object
   newReels.forEach(
@@ -47,7 +48,9 @@ function getFilteredReels(reels: any, usernames: string[]) {
       reelsByOwner[reel.ownerUsername].reels.push(reel)
   );
 
-  console.log('PASSED Sort out the reels by owner and place them in the object')
+  console.log(
+    "PASSED Sort out the reels by owner and place them in the object"
+  );
 
   // Get the avg View Count for each owner
   Object.keys(reelsByOwner).forEach((reelByOwner) => {
@@ -73,11 +76,9 @@ function getFilteredReels(reels: any, usernames: string[]) {
     });
   });
 
-  console.log('filteredReels', filteredReels.length)
+  console.log("filteredReels", filteredReels.length);
 
   return filteredReels;
 }
 
-export {
-  getFilteredReels,
-};
+export { getFilteredReels };

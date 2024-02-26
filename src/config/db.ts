@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
 import { ENV } from "../constants";
 
-const connectToDb = () => {
-  mongoose
+const connectToDb = async () => {
+  return mongoose
     .connect(ENV.MONGO_URL)
     .then((conn) => {
       console.log(`connected to db at ${conn.connection.host}`);

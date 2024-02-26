@@ -1,0 +1,27 @@
+org: saurabhlm10
+app: serverless-example
+service: serverless-example
+frameworkVersion: "3"
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-dotenv-plugin
+
+custom:
+  dotenv:
+    path: ./
+    include:
+      - .env
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-south-1
+
+functions:
+  collectPosts:
+    handler: src/serverless/collectPosts.serverless.handler
+    events:
+      - httpApi:
+          path: /collectPosts/{page}
+          method: get

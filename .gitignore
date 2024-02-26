@@ -2,3 +2,5 @@ dist/
 .env
 node_modules
 src/dev/
+.build
+.serverless

@@ -1,6 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
-
 import app from "./app";
 import postRoutes from "./routes/postRoutes";
 import pageRoutes from "./routes/pageRoutes";

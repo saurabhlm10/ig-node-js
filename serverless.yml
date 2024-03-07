@@ -7,6 +7,11 @@ plugins:
   - serverless-plugin-typescript
   - serverless-dotenv-plugin
 
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: ap-south-1
+
 custom:
   dotenv:
     path: ./
@@ -19,13 +24,6 @@ package:
     - "**/*"
   include:
     - "src/serverless/**"
-    - "src/helpers/**"
-    - "src/types/**"
-
-provider:
-  name: aws
-  runtime: nodejs18.x
-  region: ap-south-1
 
 functions:
   collectPosts:

@@ -13,6 +13,15 @@ custom:
     include:
       - .env
 
+package:
+  individually: true
+  exclude:
+    - "**/*"
+  include:
+    - "src/serverless/**"
+    - "src/helpers/**"
+    - "src/types/**"
+
 provider:
   name: aws
   runtime: nodejs18.x

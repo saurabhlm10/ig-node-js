@@ -7,7 +7,6 @@ import { getCurrentMonthYearName } from "../../helpers/getCurrentMonthYearName";
 import { RedisEntry, StatusValues } from "../../types/RedisEntry.type";
 import { ENV } from "../../constants";
 import { fetchRedis } from "../../helpers/fetchRedis";
-import connectToDb from "../../config/db";
 
 export const collectPosts = async (params: {
   page: string;

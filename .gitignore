@@ -4,3 +4,4 @@ node_modules
 src/dev/
 .build
 .serverless
+env.json

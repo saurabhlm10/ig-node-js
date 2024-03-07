@@ -25,3 +25,9 @@ functions:
       - httpApi:
           path: /collectPosts/{page}
           method: get
+  selfInvoke:
+    handler: src/serverless/selfInvoke.serverless.handler
+    events:
+      - httpApi:
+          path: /selfInvoke
+          method: get

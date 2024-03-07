@@ -1,0 +1,2 @@
+# requirements.txt
+tweepy==4.14.0

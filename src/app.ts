@@ -1,6 +1,6 @@
 import express from "express";
 import connectToDb from "./config/db";
-import cors from 'cors';
+import cors from "cors";
 import morgan from "morgan";
 
 connectToDb();

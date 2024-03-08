@@ -3,6 +3,7 @@ import postRoutes from "./routes/postRoutes";
 import pageRoutes from "./routes/pageRoutes";
 import statusRoutes from "./routes/statusRoutes";
 import batchRoutes from "./routes/batch.route";
+import secretRoutes from "./routes/secret.route";
 import morgan from "morgan";
 import cors from "cors";
 import os from "os";
@@ -16,6 +17,7 @@ app.use("/api/post", postRoutes);
 app.use("/api/page", pageRoutes);
 app.use("/api/status", statusRoutes);
 app.use("/api/batch", batchRoutes);
+app.use("/api/secret", secretRoutes);
 
 console.log("CPUS", os.cpus().length);
 

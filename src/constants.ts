@@ -1,5 +1,15 @@
 import dotenv from "dotenv";
-dotenv.config();
+
+// Load the correct .env file based on the NODE_ENV environment variable
+const result = dotenv.config({
+  path: `.env.${process.env.NODE_ENV}`,
+});
+
+if (result.error) {
+  throw result.error;
+}
+
+// Rest of your code...
 
 import { getDaysInCurrentMonth } from "./helpers/getDaysInCurrentMonth";
 
@@ -67,3 +77,5 @@ export const ENV = {
   cloudinary_api_secret,
   cryptoSecret,
 };
+
+console.log(ENV);

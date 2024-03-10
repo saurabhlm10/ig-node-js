@@ -1,20 +1,12 @@
 import { Request, Response } from "express";
 import SecretModel from "../../model/Secret.model";
-import Crypto from "crypto-js";
-import { ENV } from "../../constants";
+import { encrypt } from "../../helpers/encrypt";
 
 export const createSecret = async (req: Request, res: Response) => {
   try {
     const { page, apify_key, ig_user_id } = req.body;
 
-    console.log(req.body);
-
-    const cryptoSecret = ENV.cryptoSecret;
-
-    const encrypted_apify_key = Crypto.AES.encrypt(
-      apify_key,
-      cryptoSecret
-    ).toString();
+    const encrypted_apify_key = encrypt(apify_key);
 
     const newSecret = new SecretModel({
       page,

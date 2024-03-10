@@ -1,22 +1,28 @@
-import mongoose, { Types } from 'mongoose';
+import mongoose, { Types } from "mongoose";
 
 const BatchSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
+      unique: true,
+    },
+    encrypted_access_token: {
+      type: String,
+      required: true,
+      unique: true,
     },
     pages: {
       type: [mongoose.Schema.ObjectId],
       required: true,
-      default: []
-    }
+      default: [],
+    },
   },
   {
     timestamps: true,
   }
 );
 
-const BatchModel = mongoose.model('Batch', BatchSchema);
+const BatchModel = mongoose.model("Batch", BatchSchema);
 
 export default BatchModel;

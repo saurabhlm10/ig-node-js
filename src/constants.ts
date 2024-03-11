@@ -1,9 +1,11 @@
 import dotenv from "dotenv";
 
 // Load the correct .env file based on the NODE_ENV environment variable
-const result = dotenv.config({
-  path: `.env.${process.env.NODE_ENV}`,
-});
+const result = process.env.NODE_ENV
+  ? dotenv.config({
+      path: `.env.${process.env.NODE_ENV}`,
+    })
+  : dotenv.config();
 
 if (result.error) {
   throw result.error;

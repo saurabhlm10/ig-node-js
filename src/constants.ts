@@ -1,7 +1,15 @@
 import dotenv from "dotenv";
 
-// Load the correct .env file based on the NODE_ENV environment variable
 dotenv.config();
+// Load the correct .env file based on the NODE_ENV environment variable
+const env = process.env.NODE_ENV;
+
+env === "dev" &&
+  dotenv.config({
+    path: `.env.${process.env.NODE_ENV}`,
+  });
+
+console.log("process.env.PORT", process.env.PORT);
 
 // Rest of your code...
 

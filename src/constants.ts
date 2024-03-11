@@ -1,17 +1,7 @@
 import dotenv from "dotenv";
 
 // Load the correct .env file based on the NODE_ENV environment variable
-const result =
-  process.env?.NODE_ENV === "dev"
-    ? dotenv.config({
-        path: `.env.${process.env.NODE_ENV}`,
-      })
-    : dotenv.config();
-
-if (result.error) {
-  console.log("process.env.NODE_ENV", process.env.NODE_ENV);
-  throw result.error;
-}
+dotenv.config();
 
 // Rest of your code...
 

@@ -1,11 +1,23 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
+
+export enum PageStages {
+  One = 1,
+  Two = 2,
+  Three = 3,
+}
 
 const IGPageSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: true,
-      unique: true
+      unique: true,
+    },
+    stage: {
+      type: String,
+      required: true,
+      enum: PageStages,
+      default: PageStages.One,
     },
   },
   {
@@ -13,6 +25,6 @@ const IGPageSchema = new mongoose.Schema(
   }
 );
 
-const IGPageModel = mongoose.model('IGPage', IGPageSchema);
+const IGPageModel = mongoose.model("IGPage", IGPageSchema);
 
 export default IGPageModel;

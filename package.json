@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
     "start": "node dist/server",
-    "dev": "tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node ./dist/server.js\""
+    "dev": "NODE_ENV=dev tsc-watch --noClear -p ./tsconfig.json --onSuccess \"node ./dist/server.js\""
   },
   "keywords": [],
   "author": "",

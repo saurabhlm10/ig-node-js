@@ -12,6 +12,7 @@ const secretSchema = new mongoose.Schema(
     },
     ig_user_id: {
       type: String,
+      unique: true,
     },
   },
   {

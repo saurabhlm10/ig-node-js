@@ -17,6 +17,8 @@ export const uploadMediaContainer = async (req: Request, res: Response) => {
     const currentDate = new Date();
     const currentMonth = ENV.months[currentDate.getMonth()];
 
+    console.log(currentMonth);
+
     // Find one post to upload from current month
     const currentPost = await Post.findOne({
       status: "uploaded-to-cloud",
@@ -39,8 +41,8 @@ export const uploadMediaContainer = async (req: Request, res: Response) => {
       mediaToUpload,
       currentPost.cover_url,
       currentPost.caption,
-      page as string
-      // currentPost.ownerUsername
+      page as string,
+      currentPost.ownerUsername
     );
 
     if (!creation_id) {

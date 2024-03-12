@@ -6,3 +6,5 @@ src/dev/
 .serverless
 env.json
 .env.*
+*.js
+test.*

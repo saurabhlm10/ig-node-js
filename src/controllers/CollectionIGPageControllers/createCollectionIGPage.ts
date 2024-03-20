@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import CollectionIGPage from "../../model/CollectionIGPage";
 import { MongoError } from "mongodb";
+import IGPageModel from "../../model/IGPage";
 
 export const createCollectionIGPage = async (req: Request, res: Response) => {
   const { username, followersCount, page } = req.body;
@@ -15,6 +16,13 @@ export const createCollectionIGPage = async (req: Request, res: Response) => {
   }
 
   try {
+    // Check if IGPage exists
+    const pageExists = await IGPageModel.findOne({ name: page });
+
+    if (!pageExists) {
+      return res.status(400).send({ error: "IGPage does not exist." });
+    }
+
     // Create a new page
     const createdPage = new CollectionIGPage({
       username: username,

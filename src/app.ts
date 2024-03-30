@@ -2,6 +2,7 @@ import express from "express";
 import connectToDb from "./config/db";
 import cors from "cors";
 import morgan from "morgan";
+import cron from "node-cron";
 
 connectToDb();
 
@@ -11,6 +12,10 @@ app.use(cors());
 app.use(morgan("tiny"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+cron.schedule("*/5 * * * *", () => {
+  console.log("running a task every 5 minutes");
+});
 
 app.get("/", (req, res) => {
   console.log(req.params);

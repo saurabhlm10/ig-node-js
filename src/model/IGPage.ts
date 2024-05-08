@@ -19,6 +19,9 @@ const IGPageSchema = new mongoose.Schema(
       enum: PageStages,
       default: PageStages.One,
     },
+    caption: {
+      type: String,
+    },
   },
   {
     timestamps: true,

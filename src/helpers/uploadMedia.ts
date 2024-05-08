@@ -1,6 +1,7 @@
 import axios from "axios";
 import { AxiosError } from "axios";
 import { ENV } from "../constants";
+import IGPageModel from "../model/IGPage";
 
 function removeHashtags(text: string) {
   return text.replace(/#[^\s#]+/g, "").trim();
@@ -39,7 +40,10 @@ To request a takedown of any post, please send an email to piratesonaship@gmail.
     // const tempCaption = removeHashtags(caption);
     const tempCaption = `@${ownerUsername}`;
 
-    const captionHastags = `
+    const pageHashtags =
+      (await IGPageModel.findOne({ name: page }))?.caption || "";
+
+    const captionFiller = `
   
   Rate This 1-10 🥰
 
@@ -53,10 +57,11 @@ To request a takedown of any post, please send an email to piratesonaship@gmail.
   
   (All rights® are reserved & belong
   to their respective owners)
+  
   `;
 
     const uriEncodedCaption = urlEncodeString(
-      tempCaption + captionHastags + copyrightDisclaimer
+      tempCaption + captionFiller + pageHashtags + copyrightDisclaimer
     );
 
     console.log("2");
